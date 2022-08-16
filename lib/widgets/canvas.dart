@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 import '../data/marks.dart';
 import '../data/tool_selections.dart';
@@ -85,15 +86,29 @@ class Rectangle extends StatelessWidget {
   final Color color;
   final Rect rect;
 
+  void _onTap() {
+    //TODO(justinmc): Select.
+  }
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
       left: rect.topLeft.dx,
       top: rect.topLeft.dy,
-      child: Container(
-        width: rect.width,
-        height: rect.height,
-        color: color,
+      child: GestureDetector(
+        onTap: _onTap,
+        // TODO(justinmc): Marching ants if you have time...
+        child: DottedBorder(
+          color: Colors.black,
+          //color: selected ? Colors.black : Colors.transparent,
+          dashPattern: const <double>[6, 3],
+          strokeWidth: 1,
+          child: Container(
+            color: color,
+            width: rect.width,
+            height: rect.height,
+          ),
+        ),
       ),
     );
   }
