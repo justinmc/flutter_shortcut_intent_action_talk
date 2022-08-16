@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'widgets/menu_bar.dart';
 import 'widgets/toolbar.dart';
 
 void main() {
@@ -36,34 +37,7 @@ class MyHomePage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              TextButton(
-                onPressed: () {},
-                child: const Text('File'),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text('Option'),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text('View'),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text('Image'),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text('Options'),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text('Help'),
-              ),
-            ],
-          ),
+          const MenuBar(),
           Row(
             children: const <Widget>[
               Toolbar(),
