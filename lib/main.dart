@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_shortcut_intent_action_talk/data/marks.dart';
 
-import 'data/tool_selections.dart';
 import 'widgets/canvas.dart';
 import 'widgets/menu_bar.dart';
+import 'widgets/palette.dart';
 import 'widgets/toolbar.dart';
 
 void main() {
@@ -14,23 +13,6 @@ void main() {
     ),
   );
 }
-
-final StateNotifierProvider<ToolSelectionsNotifier, ToolSelections> selectionsProvider =
-  StateNotifierProvider<ToolSelectionsNotifier, ToolSelections>(
-    (StateNotifierProviderRef<ToolSelectionsNotifier, ToolSelections> ref) {
-      return ToolSelectionsNotifier(const ToolSelections(
-        tool: Tool.rectangle,
-        color: Colors.black,
-      ));
-    },
-  );
-
-final StateNotifierProvider<MarksNotifier, Set<Mark>> marksProvider =
-  StateNotifierProvider<MarksNotifier, Set<Mark>>(
-    (StateNotifierProviderRef<MarksNotifier, Set<Mark>> ref) {
-      return MarksNotifier();
-    },
-  );
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -65,8 +47,8 @@ class MyHomePage extends StatelessWidget {
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                const Toolbar(),
+              children: const <Widget>[
+                Toolbar(),
                 Expanded(
                   child: Canvas(),
                 ),
@@ -75,12 +57,12 @@ class MyHomePage extends StatelessWidget {
           ),
           Container(
             color: kUglyGrey,
-            height: 60.0,
+            height: 160.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.start,
               children: const <Widget>[
-                Text('Color palette'),
+                Palette(),
                 Text('Text and stuff'),
               ],
             ),

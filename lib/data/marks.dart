@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+final StateNotifierProvider<MarksNotifier, Set<Mark>> marksProvider =
+  StateNotifierProvider<MarksNotifier, Set<Mark>>(
+    (StateNotifierProviderRef<MarksNotifier, Set<Mark>> ref) {
+      return MarksNotifier();
+    },
+  );
+
 @immutable
 class Mark {
   const Mark({

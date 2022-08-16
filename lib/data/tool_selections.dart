@@ -8,6 +8,16 @@ enum Tool {
   circle,
 }
 
+final StateNotifierProvider<ToolSelectionsNotifier, ToolSelections> selectionsProvider =
+  StateNotifierProvider<ToolSelectionsNotifier, ToolSelections>(
+    (StateNotifierProviderRef<ToolSelectionsNotifier, ToolSelections> ref) {
+      return ToolSelectionsNotifier(const ToolSelections(
+        tool: Tool.rectangle,
+        color: Colors.black,
+      ));
+    },
+  );
+
 /// The selections that can be made in the toolbars of the app.
 @immutable
 class ToolSelections {

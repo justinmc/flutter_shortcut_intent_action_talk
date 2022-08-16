@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_shortcut_intent_action_talk/main.dart';
 
 import '../data/marks.dart';
 import '../data/tool_selections.dart';
