@@ -56,6 +56,18 @@ class Toolbar extends StatelessWidget {
           ToolButton(
             name: 'tool_pencil.png',
           ),
+          ToolButton(
+            name: 'tool_pencil.png',
+          ),
+          ToolButton(
+            name: 'tool_pencil.png',
+          ),
+          ToolButton(
+            name: 'tool_pencil.png',
+          ),
+          ToolButton(
+            name: 'tool_pencil.png',
+          ),
         ],
       ),
     );

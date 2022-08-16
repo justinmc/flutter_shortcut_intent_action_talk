@@ -35,13 +35,32 @@ class MyHomePage extends StatelessWidget {
         title: const Text('Flutter Paint'),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           const MenuBar(),
-          Row(
-            children: const <Widget>[
-              Toolbar(),
-            ],
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  color: kUglyGrey,
+                  width: 100.0,
+                  child: const Toolbar(),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            color: kUglyGrey,
+            height: 60.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: const <Widget>[
+                Text('Color palette'),
+                Text('Text and stuff'),
+              ],
+            ),
           ),
         ],
       ),
