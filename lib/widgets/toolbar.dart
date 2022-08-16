@@ -15,9 +15,8 @@ class Toolbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 200.0,
-      height: 600.0,
       color: kUglyGrey,
+      width: 100.0,
       child: GridView.count(
         primary: false,
         padding: const EdgeInsets.all(8.0),

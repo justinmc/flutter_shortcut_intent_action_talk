@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_shortcut_intent_action_talk/data/marks.dart';
 
 import 'data/tool_selections.dart';
+import 'widgets/canvas.dart';
 import 'widgets/menu_bar.dart';
 import 'widgets/toolbar.dart';
 
@@ -20,6 +22,13 @@ final StateNotifierProvider<ToolSelectionsNotifier, ToolSelections> selectionsPr
         tool: Tool.rectangle,
         color: Colors.black,
       ));
+    },
+  );
+
+final StateNotifierProvider<MarksNotifier, Set<Mark>> marksProvider =
+  StateNotifierProvider<MarksNotifier, Set<Mark>>(
+    (StateNotifierProviderRef<MarksNotifier, Set<Mark>> ref) {
+      return MarksNotifier();
     },
   );
 
@@ -57,10 +66,9 @@ class MyHomePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  color: kUglyGrey,
-                  width: 100.0,
-                  child: const Toolbar(),
+                const Toolbar(),
+                Expanded(
+                  child: Canvas(),
                 ),
               ],
             ),
