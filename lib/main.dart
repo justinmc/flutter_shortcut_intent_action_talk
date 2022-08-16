@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'data/tool_selections.dart';
 import 'widgets/menu_bar.dart';
 import 'widgets/toolbar.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
+
+final StateNotifierProvider<ToolSelectionsNotifier, ToolSelections> selectionsProvider =
+  StateNotifierProvider<ToolSelectionsNotifier, ToolSelections>(
+    (StateNotifierProviderRef<ToolSelectionsNotifier, ToolSelections> ref) {
+      return ToolSelectionsNotifier(const ToolSelections(
+        tool: Tool.rectangle,
+        color: Colors.black,
+      ));
+    },
+  );
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -26,7 +42,6 @@ class MyHomePage extends StatelessWidget {
   const MyHomePage({
     super.key,
   });
-
 
   @override
   Widget build(BuildContext context) {
