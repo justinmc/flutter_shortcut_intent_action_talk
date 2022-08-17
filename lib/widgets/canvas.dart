@@ -26,6 +26,12 @@ class _CanvasState extends ConsumerState<Canvas> {
     }
 
     final ToolSelections selections = ref.read(selectionsProvider);
+
+    // TODO(justinmc): Only the rectangle tool actually works now...
+    if (selections.tool != Tool.rectangle) {
+      return;
+    }
+
     setState(() {
       _dragStartLocalFocalPoint = details.localFocalPoint;
       _draggingMark = Mark(
@@ -67,6 +73,7 @@ class _CanvasState extends ConsumerState<Canvas> {
   }
 
   void _onTapMark(Mark mark) {
+    // TODO(justinmc): Should tap to select only work for certain tools?
     setState(() {
       _selectedMark = mark;
     });
