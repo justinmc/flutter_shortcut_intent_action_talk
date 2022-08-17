@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum Tool {
+  circle,
   pencil,
   rectangle,
-  circle,
+  selection,
 }
 
 final StateNotifierProvider<ToolSelectionsNotifier, ToolSelections> selectionsProvider =

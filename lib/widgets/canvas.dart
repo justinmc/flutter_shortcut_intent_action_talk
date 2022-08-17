@@ -78,7 +78,11 @@ class _CanvasState extends ConsumerState<Canvas> {
       return;
     }
 
-    // TODO(justinmc): Restrictions on which tools can drag a mark?
+    final ToolSelections selections = ref.read(selectionsProvider);
+
+    if (selections.tool != Tool.selection) {
+      return;
+    }
 
     setState(() {
       _translateStartLocalFocalPoint = details.localFocalPoint;
@@ -120,6 +124,9 @@ class _CanvasState extends ConsumerState<Canvas> {
   @override
   Widget build(BuildContext context) {
     final Set<Mark> marks = ref.watch(marksProvider);
+    final ToolSelections selections = ref.watch(selectionsProvider);
+
+    final bool canTranslate = selections.tool == Tool.selection;
 
     return GestureDetector(
       onScaleStart: _onScaleStart,
@@ -132,9 +139,9 @@ class _CanvasState extends ConsumerState<Canvas> {
           children: <Widget>[
             ...marks.map((Mark mark) => Rectangle.mark(
               mark: mark,
-              onScaleStart: (ScaleStartDetails details) => _onScaleMarkStart(mark, details),
-              onScaleUpdate: (ScaleUpdateDetails details) => _onScaleMarkUpdate(mark, details),
-              onScaleEnd: (ScaleEndDetails details) => _onScaleMarkEnd(mark, details),
+              onScaleStart: canTranslate ? (ScaleStartDetails details) => _onScaleMarkStart(mark, details) : null,
+              onScaleUpdate: canTranslate ? (ScaleUpdateDetails details) => _onScaleMarkUpdate(mark, details) : null,
+              onScaleEnd: canTranslate ? (ScaleEndDetails details) => _onScaleMarkEnd(mark, details) : null,
               onTap: () => _onTapMark(mark),
               selected: _selectedMark == mark,
             )),
@@ -150,9 +157,9 @@ class Rectangle extends StatelessWidget {
     super.key,
     required this.color,
     required this.onTap,
-    required this.onScaleStart,
-    required this.onScaleUpdate,
-    required this.onScaleEnd,
+    this.onScaleStart,
+    this.onScaleUpdate,
+    this.onScaleEnd,
     required this.rect,
     required this.selected,
   });
@@ -161,9 +168,9 @@ class Rectangle extends StatelessWidget {
   Rectangle.mark({
     super.key,
     required Mark mark,
-    required this.onScaleStart,
-    required this.onScaleUpdate,
-    required this.onScaleEnd,
+    this.onScaleStart,
+    this.onScaleUpdate,
+    this.onScaleEnd,
     required this.onTap,
     required this.selected,
   }) : color = mark.color,
@@ -171,9 +178,9 @@ class Rectangle extends StatelessWidget {
 
   final Color color;
   final VoidCallback onTap;
-  final GestureScaleStartCallback onScaleStart;
-  final GestureScaleUpdateCallback onScaleUpdate;
-  final GestureScaleEndCallback onScaleEnd;
+  final GestureScaleStartCallback? onScaleStart;
+  final GestureScaleUpdateCallback? onScaleUpdate;
+  final GestureScaleEndCallback? onScaleEnd;
   final Rect rect;
   final bool selected;
 

@@ -61,9 +61,10 @@ flutter:
   uses-material-design: true
 
   assets:
-    - tool_pencil.png
     - tool_circle.png
+    - tool_pencil.png
     - tool_rectangle.png
+    - tool_selection.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
