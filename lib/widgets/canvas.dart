@@ -18,18 +18,23 @@ class _CanvasState extends ConsumerState<Canvas> {
   Offset? _dragStartLocalFocalPoint;
   Mark? _draggingMark;
 
+  Mark? _selectedMark;
+
   void _onScaleStart (ScaleStartDetails details) {
     if (details.pointerCount != 1) {
       return;
     }
 
     final ToolSelections selections = ref.read(selectionsProvider);
-    _dragStartLocalFocalPoint = details.localFocalPoint;
-    _draggingMark = Mark(
-      color: selections.color,
-      rect: details.localFocalPoint & const Size(1.0, 1.0),
-    );
-    ref.read(marksProvider.notifier).create(_draggingMark!);
+    setState(() {
+      _dragStartLocalFocalPoint = details.localFocalPoint;
+      _draggingMark = Mark(
+        color: selections.color,
+        rect: details.localFocalPoint & const Size(1.0, 1.0),
+      );
+      _selectedMark = _draggingMark;
+      ref.read(marksProvider.notifier).create(_draggingMark!);
+    });
   }
 
   void _onScaleUpdate (ScaleUpdateDetails details) {
@@ -40,13 +45,31 @@ class _CanvasState extends ConsumerState<Canvas> {
       _dragStartLocalFocalPoint!,
       details.localFocalPoint,
     );
-    _draggingMark = ref.read(marksProvider.notifier)
-        .replace(_draggingMark!, nextRect);
+    setState(() {
+      _draggingMark = ref.read(marksProvider.notifier)
+          .replace(_draggingMark!, nextRect);
+      _selectedMark = _draggingMark;
+    });
   }
 
   void _onScaleEnd (ScaleEndDetails details) {
-    _draggingMark = null;
-    _dragStartLocalFocalPoint = null;
+    // TODO(justinmc): Remove marks below some threshold size?
+    setState(() {
+      _draggingMark = null;
+      _dragStartLocalFocalPoint = null;
+    });
+  }
+
+  void _onTapCanvas() {
+    setState(() {
+      _selectedMark = null;
+    });
+  }
+
+  void _onTapMark(Mark mark) {
+    setState(() {
+      _selectedMark = mark;
+    });
   }
 
   @override
@@ -57,11 +80,16 @@ class _CanvasState extends ConsumerState<Canvas> {
       onScaleStart: _onScaleStart,
       onScaleUpdate: _onScaleUpdate,
       onScaleEnd: _onScaleEnd,
+      onTap: _onTapCanvas,
       child: Container(
         color: Colors.white,
         child: Stack(
           children: <Widget>[
-            ...marks.map((Mark mark) => Rectangle.mark(mark: mark)),
+            ...marks.map((Mark mark) => Rectangle.mark(
+              mark: mark,
+              onTap: () => _onTapMark(mark),
+              selected: _selectedMark == mark,
+            )),
           ],
         ),
       ),
@@ -73,22 +101,24 @@ class Rectangle extends StatelessWidget {
   const Rectangle({
     super.key,
     required this.color,
+    required this.onTap,
     required this.rect,
+    required this.selected,
   });
 
   /// Create a [Rectangle] from a [Mark].
   Rectangle.mark({
     super.key,
     required Mark mark,
+    required this.onTap,
+    required this.selected,
   }) : color = mark.color,
        rect = mark.rect;
 
   final Color color;
+  final VoidCallback onTap;
   final Rect rect;
-
-  void _onTap() {
-    //TODO(justinmc): Select.
-  }
+  final bool selected;
 
   @override
   Widget build(BuildContext context) {
@@ -96,11 +126,10 @@ class Rectangle extends StatelessWidget {
       left: rect.topLeft.dx,
       top: rect.topLeft.dy,
       child: GestureDetector(
-        onTap: _onTap,
+        onTap: onTap,
         // TODO(justinmc): Marching ants if you have time...
         child: DottedBorder(
-          color: Colors.black,
-          //color: selected ? Colors.black : Colors.transparent,
+          color: selected ? Colors.black : Colors.transparent,
           dashPattern: const <double>[6, 3],
           strokeWidth: 1,
           child: Container(
