@@ -28,6 +28,11 @@ class Mark {
       rect: rect ?? this.rect,
     );
   }
+
+  @override
+  String toString() {
+    return 'Mark $color, $rect';
+  }
 }
 
 class MarksNotifier extends StateNotifier<Set<Mark>> {
