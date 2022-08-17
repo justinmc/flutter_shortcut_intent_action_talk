@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dotted_border/dotted_border.dart';
 
@@ -21,6 +22,8 @@ class _CanvasState extends ConsumerState<Canvas> {
   Mark? _translatingMark;
   Mark? _selectedMark;
 
+  //final Map<Mark, FocusNode> _focusNodes = <Mark, FocusNode>{};
+
   void _onScaleStart (ScaleStartDetails details) {
     if (details.pointerCount != 1) {
       return;
@@ -40,7 +43,7 @@ class _CanvasState extends ConsumerState<Canvas> {
         rect: details.localFocalPoint & const Size(1.0, 1.0),
       );
       _selectedMark = _creatingMark;
-      ref.read(marksProvider.notifier).create(_creatingMark!);
+      ref.read(marksProvider.notifier).add(_creatingMark!);
     });
   }
 
@@ -71,6 +74,10 @@ class _CanvasState extends ConsumerState<Canvas> {
     setState(() {
       _selectedMark = null;
     });
+  }
+
+  void _onDeleteMark(Mark mark) {
+    ref.read(marksProvider.notifier).remove(mark);
   }
 
   void _onScaleMarkStart(Mark mark, ScaleStartDetails details) {
@@ -133,19 +140,82 @@ class _CanvasState extends ConsumerState<Canvas> {
       onScaleUpdate: _onScaleUpdate,
       onScaleEnd: _onScaleEnd,
       onTap: _onTapCanvas,
-      child: Container(
-        color: Colors.white,
-        child: Stack(
-          children: <Widget>[
-            ...marks.map((Mark mark) => Rectangle.mark(
+      child: Actions(
+        actions: <Type, Action<Intent>>{
+          _DeleteMarkIntent: CallbackAction<_DeleteMarkIntent>(
+            onInvoke: (_DeleteMarkIntent intent) {
+              _onDeleteMark(intent.mark);
+              return;
+            },
+          ),
+        },
+        child: Container(
+          color: Colors.white,
+          child: Stack(
+            children: <Widget>[
+              ...marks.map((Mark mark) => MarkWidget(
+                mark: mark,
+                onScaleStart: canTranslate ? (ScaleStartDetails details) => _onScaleMarkStart(mark, details) : null,
+                onScaleUpdate: canTranslate ? (ScaleUpdateDetails details) => _onScaleMarkUpdate(mark, details) : null,
+                onScaleEnd: canTranslate ? (ScaleEndDetails details) => _onScaleMarkEnd(mark, details) : null,
+                onTap: () => _onTapMark(mark),
+                selected: _selectedMark == mark,
+              )),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MarkWidget extends StatelessWidget {
+  MarkWidget({
+    super.key,
+    required this.onTap,
+    required this.mark,
+    required this.selected,
+    this.onScaleStart,
+    this.onScaleUpdate,
+    this.onScaleEnd,
+  });
+
+  final VoidCallback onTap;
+  final GestureScaleStartCallback? onScaleStart;
+  final GestureScaleUpdateCallback? onScaleUpdate;
+  final GestureScaleEndCallback? onScaleEnd;
+  final Mark mark;
+  final bool selected;
+
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  Widget build(BuildContext context) {
+    if (selected && !_focusNode.hasFocus) {
+      _focusNode.requestFocus();
+    }
+
+    return Positioned(
+      left: mark.rect.topLeft.dx,
+      top: mark.rect.topLeft.dy,
+      child: GestureDetector(
+        onTap: onTap,
+        onScaleStart: onScaleStart,
+        onScaleUpdate: onScaleUpdate,
+        onScaleEnd: onScaleEnd,
+        // TODO(justinmc): Marching ants if you have time...
+        child: Shortcuts(
+          shortcuts: <SingleActivator, Intent>{
+            const SingleActivator(LogicalKeyboardKey.backspace): _DeleteMarkIntent(mark),
+          },
+          child: Focus(
+            focusNode: _focusNode,
+            // TODO(justinmc): Also do circle?
+            child: Rectangle.mark(
               mark: mark,
-              onScaleStart: canTranslate ? (ScaleStartDetails details) => _onScaleMarkStart(mark, details) : null,
-              onScaleUpdate: canTranslate ? (ScaleUpdateDetails details) => _onScaleMarkUpdate(mark, details) : null,
-              onScaleEnd: canTranslate ? (ScaleEndDetails details) => _onScaleMarkEnd(mark, details) : null,
-              onTap: () => _onTapMark(mark),
-              selected: _selectedMark == mark,
-            )),
-          ],
+              selected: selected,
+            ),
+          ),
         ),
       ),
     );
@@ -156,10 +226,6 @@ class Rectangle extends StatelessWidget {
   const Rectangle({
     super.key,
     required this.color,
-    required this.onTap,
-    this.onScaleStart,
-    this.onScaleUpdate,
-    this.onScaleEnd,
     required this.rect,
     required this.selected,
   });
@@ -168,44 +234,33 @@ class Rectangle extends StatelessWidget {
   Rectangle.mark({
     super.key,
     required Mark mark,
-    this.onScaleStart,
-    this.onScaleUpdate,
-    this.onScaleEnd,
-    required this.onTap,
     required this.selected,
   }) : color = mark.color,
        rect = mark.rect;
 
   final Color color;
-  final VoidCallback onTap;
-  final GestureScaleStartCallback? onScaleStart;
-  final GestureScaleUpdateCallback? onScaleUpdate;
-  final GestureScaleEndCallback? onScaleEnd;
   final Rect rect;
   final bool selected;
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      left: rect.topLeft.dx,
-      top: rect.topLeft.dy,
-      child: GestureDetector(
-        onTap: onTap,
-        onScaleStart: onScaleStart,
-        onScaleUpdate: onScaleUpdate,
-        onScaleEnd: onScaleEnd,
-        // TODO(justinmc): Marching ants if you have time...
-        child: DottedBorder(
-          color: selected ? Colors.black : Colors.transparent,
-          dashPattern: const <double>[6, 3],
-          strokeWidth: 1,
-          child: Container(
-            color: color,
-            width: rect.width,
-            height: rect.height,
-          ),
-        ),
+    return DottedBorder(
+      color: selected ? Colors.black : Colors.transparent,
+      dashPattern: const <double>[6, 3],
+      strokeWidth: 1,
+      child: Container(
+        color: color,
+        width: rect.width,
+        height: rect.height,
       ),
     );
   }
+}
+
+class _DeleteMarkIntent extends Intent {
+  const _DeleteMarkIntent(
+    this.mark,
+  );
+
+  final Mark mark;
 }

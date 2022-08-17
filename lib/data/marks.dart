@@ -40,16 +40,38 @@ class MarksNotifier extends StateNotifier<Set<Mark>> {
   ) : super(<Mark>{});
 
   /// Add a new Mark.
-  void create(Mark mark) {
+  ///
+  /// If the given Mark already exists, does nothing.
+  void add(Mark mark) {
+    if (state.contains(mark)) {
+      return;
+    }
     state = <Mark>{
       ...state,
       mark,
     };
   }
 
+  /// Removes the given Mark.
+  ///
+  /// Throws an error if the given Mark doesn't exist.
+  void remove(Mark mark) {
+    if (!state.contains(mark)) {
+      throw FlutterError('Given mark not found.');
+    }
+
+    final Set<Mark> nextState = <Mark>{...state};
+    nextState.remove(mark);
+    state = nextState;
+  }
+
+  /// Replace the given Mark with a new Mark that is the same as the previous
+  /// one but with the given `rect`.
+  ///
+  /// Throws an error if the given Mark doesn't exist.
   Mark replace(Mark mark, Rect rect) {
     if (!state.contains(mark)) {
-      throw FlutterError('Given mark not found');
+      throw FlutterError('Given mark not found.');
     }
 
     final Set<Mark> nextState = <Mark>{...state};
