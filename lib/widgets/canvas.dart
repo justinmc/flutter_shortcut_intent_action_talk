@@ -484,15 +484,18 @@ class _TextMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: kUglyGrey,
+    return SizedBox(
       width: mark.rect.width,
       height: mark.rect.height,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         // TODO(justinmc): A subclass of Mark with a TextEditingController to
         // preserve the state of each field.
+        // TODO(justinmc): Could do swap this for Text when not selected.
         child: TextField(
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+          ),
           focusNode: focusNode,
         ),
       ),
