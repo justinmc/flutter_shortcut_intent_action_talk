@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter_shortcut_intent_action_talk/widgets/toolbar.dart';
 
 import '../data/marks.dart';
 import '../data/tool_selections.dart';
@@ -27,7 +26,6 @@ class _CanvasState extends ConsumerState<Canvas> {
   Offset? _translateStartLocalFocalPoint;
   Mark? _creatingMark;
   Mark? _translatingMark;
-  Mark? _selectedMark;
   Mark? _copiedMark;
   Offset? _nextPasteOffset;
   final FocusNode _focusNode = FocusNode();
@@ -53,9 +51,9 @@ class _CanvasState extends ConsumerState<Canvas> {
           _creatingMark = Mark(
             color: selections.color,
             rect: details.localFocalPoint & const Size(1.0, 1.0),
+            selected: true,
             type: MarkType.rectangle,
           );
-          _selectedMark = _creatingMark;
           ref.read(marksProvider.notifier).add(_creatingMark!);
         });
         break;
@@ -74,8 +72,7 @@ class _CanvasState extends ConsumerState<Canvas> {
     );
     setState(() {
       _creatingMark = ref.read(marksProvider.notifier)
-          .replace(_creatingMark!, nextRect);
-      _selectedMark = _creatingMark;
+          .replaceWith(_creatingMark!, rect: nextRect, selected: true);
     });
   }
 
@@ -101,28 +98,22 @@ class _CanvasState extends ConsumerState<Canvas> {
       case Tool.pencil:
       case Tool.selection:
       case Tool.rectangle:
-        setState(() {
-          _selectedMark = null;
-        });
+        ref.read(marksProvider.notifier).unselectAll();
         return;
       case Tool.text:
-        setState(() {
-          final Mark mark = Mark(
-            color: selections.color,
-            rect: details.localPosition & const Size(200.0, 60.0),
-            type: MarkType.text,
-          );
-          _selectedMark = mark;
-          ref.read(marksProvider.notifier).add(mark);
-        });
+        final Mark mark = Mark(
+          color: selections.color,
+          rect: details.localPosition & const Size(200.0, 60.0),
+          selected: true,
+          type: MarkType.text,
+        );
+        ref.read(marksProvider.notifier).add(mark);
         break;
     }
   }
 
   void _onTapDownCanvas(TapDownDetails details) {
-    setState(() {
-      _selectedMark = null;
-    });
+    ref.read(marksProvider.notifier).unselectAll();
   }
 
   // Start of a drag gesture on a Mark, i.e. a translation.
@@ -139,8 +130,7 @@ class _CanvasState extends ConsumerState<Canvas> {
 
     setState(() {
       _translateStartLocalFocalPoint = details.localFocalPoint;
-      _translatingMark = mark;
-      _selectedMark = mark;
+      _translatingMark = ref.read(marksProvider.notifier).selectOnly(mark);
     });
   }
 
@@ -156,8 +146,7 @@ class _CanvasState extends ConsumerState<Canvas> {
     );
     setState(() {
       _translatingMark = ref.read(marksProvider.notifier)
-          .replace(_translatingMark!, nextRect);
-      _selectedMark = _translatingMark;
+          .replaceWith(_translatingMark!, rect: nextRect, selected: true);
     });
   }
 
@@ -171,24 +160,18 @@ class _CanvasState extends ConsumerState<Canvas> {
 
   void _onTapDownMark(Mark mark) {
     // TODO(justinmc): Should tap to select only work for certain tools?
-    // TODO(justinmc): For some reason this doesnt cause any Mark to think that
-    // it's selected. Something else getting called and changing the marks?
     setState(() {
-      _selectedMark = mark;
-      _nextPasteOffset = _selectedMark!.rect.topLeft + _kPasteOffset;
+      ref.read(marksProvider.notifier).selectOnly(mark);
+      _nextPasteOffset = mark.rect.topLeft + _kPasteOffset;
     });
   }
 
   void _onMarkChangeFocus(Mark mark, FocusNode focusNode) {
-    if (focusNode.hasFocus && _selectedMark != mark) {
-      setState(() {
-        _selectedMark = mark;
-      });
-    } else if (!focusNode.hasFocus && _selectedMark == mark) {
-      setState(() {
-        _selectedMark = null;
-      });
+    /*
+    if (focusNode.hasFocus && !mark.selected) {
+      ref.read(marksProvider.notifier).selectOnly(mark);
     }
+    */
   }
 
   void _onCopyMark(Mark mark) {
@@ -208,9 +191,9 @@ class _CanvasState extends ConsumerState<Canvas> {
     setState(() {
       final Mark pastedMark = _copiedMark!.copyWith(
         rect: offset & _copiedMark!.rect.size,
+        selected: true,
       );
       ref.read(marksProvider.notifier).add(pastedMark);
-      _selectedMark = pastedMark;
       _nextPasteOffset = offset + _kPasteOffset;
     });
   }
@@ -289,7 +272,6 @@ class _CanvasState extends ConsumerState<Canvas> {
                       onScaleUpdate: canTranslate ? (ScaleUpdateDetails details) => _onScaleMarkUpdate(mark, details) : null,
                       onScaleEnd: canTranslate ? (ScaleEndDetails details) => _onScaleMarkEnd(mark, details) : null,
                       onTapDown: (TapDownDetails details) => _onTapDownMark(mark),
-                      selected: _selectedMark == mark,
                     )),
                   ],
                 ),
@@ -310,7 +292,6 @@ class MarkWidget extends StatefulWidget {
     required this.onTapDown,
     required this.onChangeFocus,
     required this.mark,
-    required this.selected,
     this.onScaleStart,
     this.onScaleUpdate,
     this.onScaleEnd,
@@ -322,7 +303,6 @@ class MarkWidget extends StatefulWidget {
   final GestureScaleUpdateCallback? onScaleUpdate;
   final GestureScaleEndCallback? onScaleEnd;
   final Mark mark;
-  final bool selected;
 
   @override
   State<MarkWidget> createState() => _MarkWidgetState();
@@ -365,29 +345,21 @@ class _MarkWidgetState extends State<MarkWidget> {
   }
 
   void _onChangeFocus() {
-    if (widget.selected != _focusNode.hasFocus) {
+    if (widget.mark.selected != _focusNode.hasFocus) {
       widget.onChangeFocus(_focusNode);
     }
-    setState(() {});
+    //setState(() {});
+  }
+
+  void _onTapDown(TapDownDetails details) {
+    _focusNode.requestFocus();
+    widget.onTapDown(details);
   }
 
   @override
   void initState() {
     super.initState();
-    if (widget.selected) {
-      _focusNode.requestFocus();
-    }
     _focusNode.addListener(_onChangeFocus);
-  }
-
-  @override
-  void didUpdateWidget(MarkWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.selected && !oldWidget.selected) {
-      _focusNode.requestFocus();
-    }
-    // No need to unfocus because requestFocus on the focused Mark will take the
-    // focus away from any other previously focused Mark.
   }
 
   @override
@@ -403,7 +375,7 @@ class _MarkWidgetState extends State<MarkWidget> {
       left: widget.mark.rect.topLeft.dx,
       top: widget.mark.rect.topLeft.dy,
       child: GestureDetector(
-        onTapDown: widget.onTapDown,
+        onTapDown: _onTapDown,
         onScaleStart: widget.onScaleStart,
         onScaleUpdate: widget.onScaleUpdate,
         onScaleEnd: widget.onScaleEnd,
@@ -411,7 +383,7 @@ class _MarkWidgetState extends State<MarkWidget> {
         child: Shortcuts(
           shortcuts: _adaptiveShortcuts,
           child: DottedBorder(
-            color: _focusNode.hasFocus ? Colors.black : Colors.transparent,
+            color: widget.mark.selected ? Colors.black : Colors.transparent,
             dashPattern: const <double>[6, 3],
             strokeWidth: 1,
             child: _MarkVisual(
@@ -491,9 +463,7 @@ class _TextMark extends StatelessWidget {
       height: mark.rect.height,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
-        // TODO(justinmc): A subclass of Mark with a TextEditingController to
-        // preserve the state of each field.
-        // TODO(justinmc): Could do swap this for Text when not selected.
+        // TODO(justinmc): Could swap this for Text when not selected.
         child: TextField(
           decoration: const InputDecoration(
             border: OutlineInputBorder(),

@@ -21,37 +21,36 @@ class Mark {
     required this.color,
     required this.rect,
     required this.type,
-  }) : id = DateTime.now().millisecondsSinceEpoch;
-
-  const Mark._({
-    required this.id,
-    required this.color,
-    required this.rect,
-    required this.type,
-  });
+    int? id,
+    this.selected = false,
+  }) : id = id ?? DateTime.now().millisecondsSinceEpoch;
 
   final Color color;
   final Rect rect;
+  final bool selected;
   final MarkType type;
 
   final int id;
 
   Mark copyWith({
     Color? color,
+    int? id,
     Rect? rect,
+    bool? selected,
     MarkType? type,
   }) {
-    return Mark._(
-      id: id,
+    return Mark(
+      id: id ?? this.id,
       color: color ?? this.color,
       rect: rect ?? this.rect,
+      selected: selected ?? this.selected,
       type: type ?? this.type,
     );
   }
 
   @override
   String toString() {
-    return 'Mark $type, $color, $rect';
+    return 'Mark($id): $type, $color, $rect';
   }
 }
 
@@ -59,26 +58,40 @@ class MarksNotifier extends StateNotifier<Set<Mark>> {
   MarksNotifier(
   ) : super(<Mark>{});
 
-  /// Add a new Mark.
-  ///
-  /// If the given Mark already exists, does nothing.
-  void add(Mark mark) {
-    if (state.contains(mark)) {
-      return;
+  static Set<Mark> _unselectAll(Set<Mark> state) {
+    final Set<Mark>nextState = <Mark>{};
+
+    for (Mark mark in state) {
+      if (!mark.selected) {
+        nextState.add(mark);
+      } else {
+        nextState.add(mark.copyWith(selected: false));
+      }
     }
-    state = <Mark>{
-      ...state,
-      mark,
-    };
+    return nextState;
+  }
+
+  /// True iff there are no duplicate Mark.ids in the state.
+  bool _containsNoDuplicateIds() {
+    if (state.isEmpty) {
+      return true;
+    }
+
+    final Set<int>ids = <int>{};
+
+    for (Mark mark in state) {
+      ids.add(mark.id);
+    }
+
+    return ids.length == state.length;
   }
 
   /// Removes the given Mark.
   ///
   /// Throws an error if the given Mark doesn't exist.
   void remove(Mark mark) {
-    if (!state.contains(mark)) {
-      throw FlutterError('Given mark not found.');
-    }
+    assert(state.contains(mark));
+    assert(_containsNoDuplicateIds());
 
     final Set<Mark> nextState = <Mark>{...state};
     nextState.remove(mark);
@@ -86,19 +99,59 @@ class MarksNotifier extends StateNotifier<Set<Mark>> {
   }
 
   /// Replace the given Mark with a new Mark that is the same as the previous
-  /// one but with the given `rect`.
+  /// one but with the given values.
   ///
   /// Throws an error if the given Mark doesn't exist.
-  Mark replace(Mark mark, Rect rect) {
-    if (!state.contains(mark)) {
-      throw FlutterError('Given mark not found.');
-    }
+  Mark replaceWith(Mark mark, {
+    Rect? rect,
+    bool? selected,
+  }) {
+    assert(state.contains(mark));
+    assert(_containsNoDuplicateIds());
 
     final Set<Mark> nextState = <Mark>{...state};
     nextState.remove(mark);
-    final Mark nextMark = mark.copyWith(rect: rect);
+    final Mark nextMark = mark.copyWith(
+      rect: rect,
+      selected: selected,
+    );
     nextState.add(nextMark);
     state = nextState;
     return nextMark;
+  }
+
+  /// Selects the given Mark and unselects everything else.
+  Mark selectOnly(Mark mark) {
+    assert(state.contains(mark));
+    assert(_containsNoDuplicateIds());
+
+    Set<Mark>nextState = <Mark>{...state};
+    nextState.remove(mark);
+    nextState = _unselectAll(nextState);
+    final Mark nextMark = mark.copyWith(selected: true);
+    nextState.add(nextMark);
+
+    state = nextState;
+
+    return nextMark;
+  }
+
+  /// Add a new Mark.
+  ///
+  /// If the given Mark already exists, does nothing.
+  ///
+  /// When a new Mark is added, all other Marks are unselected.
+  void add(Mark mark) {
+    assert(_containsNoDuplicateIds());
+
+    if (state.contains(mark)) {
+      return;
+    }
+    state = _unselectAll(state)
+        ..add(mark);
+  }
+
+  void unselectAll() {
+    state = _unselectAll(state);
   }
 }
