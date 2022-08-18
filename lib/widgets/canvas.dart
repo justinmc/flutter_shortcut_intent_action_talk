@@ -67,10 +67,6 @@ class _CanvasState extends ConsumerState<Canvas> {
     if (_creatingMark == null || _createStartLocalFocalPoint == null) {
       return;
     }
-    final ToolSelections selections = ref.read(selectionsProvider);
-    if (selections.tool != Tool.rectangle) {
-      return;
-    }
 
     final Rect nextRect = Rect.fromPoints(
       _createStartLocalFocalPoint!,
@@ -85,6 +81,9 @@ class _CanvasState extends ConsumerState<Canvas> {
 
   // End of a scale gesture on the canvas.
   void _onScaleEnd (ScaleEndDetails details) {
+    if (_creatingMark == null || _createStartLocalFocalPoint == null) {
+      return;
+    }
     // TODO(justinmc): Remove marks below some threshold size?
     setState(() {
       _nextPasteOffset = _creatingMark!.rect.topLeft + _kPasteOffset;
@@ -181,9 +180,15 @@ class _CanvasState extends ConsumerState<Canvas> {
   }
 
   void _onMarkChangeFocus(Mark mark, FocusNode focusNode) {
-    setState(() {
-      _selectedMark = focusNode.hasFocus ? mark : null;
-    });
+    if (focusNode.hasFocus && _selectedMark != mark) {
+      setState(() {
+        _selectedMark = mark;
+      });
+    } else if (!focusNode.hasFocus && _selectedMark == mark) {
+      setState(() {
+        _selectedMark = null;
+      });
+    }
   }
 
   void _onCopyMark(Mark mark) {
@@ -359,7 +364,10 @@ class _MarkWidgetState extends State<MarkWidget> {
   }
 
   void _onChangeFocus() {
-    widget.onChangeFocus(_focusNode);
+    if (widget.selected != _focusNode.hasFocus) {
+      widget.onChangeFocus(_focusNode);
+    }
+    setState(() {});
   }
 
   @override
@@ -376,9 +384,9 @@ class _MarkWidgetState extends State<MarkWidget> {
     super.didUpdateWidget(oldWidget);
     if (widget.selected && !oldWidget.selected) {
       _focusNode.requestFocus();
-    } else if (!widget.selected && oldWidget.selected) {
-      _focusNode.unfocus();
     }
+    // No need to unfocus because requestFocus on the focused Mark will take the
+    // focus away from any other previously focused Mark.
   }
 
   @override
