@@ -9,29 +9,39 @@ final StateNotifierProvider<MarksNotifier, Set<Mark>> marksProvider =
     },
   );
 
+enum MarkType {
+  // circle,
+  rectangle,
+  text,
+}
+
 @immutable
 class Mark {
   const Mark({
     required this.color,
     required this.rect,
+    required this.type,
   });
 
   final Color color;
   final Rect rect;
+  final MarkType type;
 
   Mark copyWith({
     Color? color,
     Rect? rect,
+    MarkType? type,
   }) {
     return Mark(
       color: color ?? this.color,
       rect: rect ?? this.rect,
+      type: type ?? this.type,
     );
   }
 
   @override
   String toString() {
-    return 'Mark $color, $rect';
+    return 'Mark $type, $color, $rect';
   }
 }
 

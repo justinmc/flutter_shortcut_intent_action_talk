@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter_shortcut_intent_action_talk/widgets/toolbar.dart';
 
 import '../data/marks.dart';
 import '../data/tool_selections.dart';
@@ -40,20 +41,25 @@ class _CanvasState extends ConsumerState<Canvas> {
 
     final ToolSelections selections = ref.read(selectionsProvider);
 
-    // TODO(justinmc): Only the rectangle tool actually works now...
-    if (selections.tool != Tool.rectangle) {
-      return;
+    switch (selections.tool) {
+      case Tool.circle:
+      case Tool.pencil:
+      case Tool.selection:
+      case Tool.text:
+        return;
+      case Tool.rectangle:
+        setState(() {
+          _createStartLocalFocalPoint = details.localFocalPoint;
+          _creatingMark = Mark(
+            color: selections.color,
+            rect: details.localFocalPoint & const Size(1.0, 1.0),
+            type: MarkType.rectangle,
+          );
+          _selectedMark = _creatingMark;
+          ref.read(marksProvider.notifier).add(_creatingMark!);
+        });
+        break;
     }
-
-    setState(() {
-      _createStartLocalFocalPoint = details.localFocalPoint;
-      _creatingMark = Mark(
-        color: selections.color,
-        rect: details.localFocalPoint & const Size(1.0, 1.0),
-      );
-      _selectedMark = _creatingMark;
-      ref.read(marksProvider.notifier).add(_creatingMark!);
-    });
   }
 
   // Update of a scale gesture on the canvas.
@@ -61,6 +67,11 @@ class _CanvasState extends ConsumerState<Canvas> {
     if (_creatingMark == null || _createStartLocalFocalPoint == null) {
       return;
     }
+    final ToolSelections selections = ref.read(selectionsProvider);
+    if (selections.tool != Tool.rectangle) {
+      return;
+    }
+
     final Rect nextRect = Rect.fromPoints(
       _createStartLocalFocalPoint!,
       details.localFocalPoint,
@@ -85,6 +96,28 @@ class _CanvasState extends ConsumerState<Canvas> {
   void _onTapUpCanvas(TapUpDetails details) {
     _nextPasteOffset = details.localPosition;
     _focusNode.requestFocus();
+    final ToolSelections selections = ref.read(selectionsProvider);
+    switch (selections.tool) {
+      case Tool.circle:
+      case Tool.pencil:
+      case Tool.selection:
+      case Tool.rectangle:
+        setState(() {
+          _selectedMark = null;
+        });
+        return;
+      case Tool.text:
+        setState(() {
+          final Mark mark = Mark(
+            color: selections.color,
+            rect: details.localPosition & const Size(200.0, 60.0),
+            type: MarkType.text,
+          );
+          _selectedMark = mark;
+          ref.read(marksProvider.notifier).add(mark);
+        });
+        break;
+    }
   }
 
   void _onTapDownCanvas(TapDownDetails details) {
@@ -144,6 +177,12 @@ class _CanvasState extends ConsumerState<Canvas> {
     setState(() {
       _selectedMark = mark;
       _nextPasteOffset = _selectedMark!.rect.topLeft + _kPasteOffset;
+    });
+  }
+
+  void _onMarkChangeFocus(Mark mark, FocusNode focusNode) {
+    setState(() {
+      _selectedMark = focusNode.hasFocus ? mark : null;
     });
   }
 
@@ -239,6 +278,7 @@ class _CanvasState extends ConsumerState<Canvas> {
                   children: <Widget>[
                     ...marks.map((Mark mark) => MarkWidget(
                       mark: mark,
+                      onChangeFocus: (FocusNode focusNode) => _onMarkChangeFocus(mark, focusNode),
                       onScaleStart: canTranslate ? (ScaleStartDetails details) => _onScaleMarkStart(mark, details) : null,
                       onScaleUpdate: canTranslate ? (ScaleUpdateDetails details) => _onScaleMarkUpdate(mark, details) : null,
                       onScaleEnd: canTranslate ? (ScaleEndDetails details) => _onScaleMarkEnd(mark, details) : null,
@@ -256,10 +296,13 @@ class _CanvasState extends ConsumerState<Canvas> {
   }
 }
 
-class MarkWidget extends StatelessWidget {
-  MarkWidget({
+typedef FocusNodeCallback = Function(FocusNode focusNode);
+
+class MarkWidget extends StatefulWidget {
+  const MarkWidget({
     super.key,
     required this.onTapDown,
+    required this.onChangeFocus,
     required this.mark,
     required this.selected,
     this.onScaleStart,
@@ -268,26 +311,32 @@ class MarkWidget extends StatelessWidget {
   });
 
   final GestureTapDownCallback onTapDown;
+  final FocusNodeCallback onChangeFocus;
   final GestureScaleStartCallback? onScaleStart;
   final GestureScaleUpdateCallback? onScaleUpdate;
   final GestureScaleEndCallback? onScaleEnd;
   final Mark mark;
   final bool selected;
 
+  @override
+  State<MarkWidget> createState() => _MarkWidgetState();
+}
+
+class _MarkWidgetState extends State<MarkWidget> {
   final FocusNode _focusNode = FocusNode();
 
   Map<SingleActivator, Intent> get _commonShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.backspace): DeleteMarkIntent(mark),
+    const SingleActivator(LogicalKeyboardKey.backspace): DeleteMarkIntent(widget.mark),
   };
 
   Map<SingleActivator, Intent> get _appleShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.keyC, meta: true): CopyMarkIntent(mark),
-    const SingleActivator(LogicalKeyboardKey.keyX, meta: true): CutMarkIntent(mark),
+    const SingleActivator(LogicalKeyboardKey.keyC, meta: true): CopyMarkIntent(widget.mark),
+    const SingleActivator(LogicalKeyboardKey.keyX, meta: true): CutMarkIntent(widget.mark),
   };
 
   Map<SingleActivator, Intent> get _nonAppleShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.keyC, control: true): CopyMarkIntent(mark),
-    const SingleActivator(LogicalKeyboardKey.keyX, control: true): CutMarkIntent(mark),
+    const SingleActivator(LogicalKeyboardKey.keyC, control: true): CopyMarkIntent(widget.mark),
+    const SingleActivator(LogicalKeyboardKey.keyX, control: true): CutMarkIntent(widget.mark),
   };
 
   Map<SingleActivator, Intent> get _adaptiveShortcuts {
@@ -308,31 +357,57 @@ class MarkWidget extends StatelessWidget {
         };
     }
   }
-  
+
+  void _onChangeFocus() {
+    widget.onChangeFocus(_focusNode);
+  }
+
   @override
-  Widget build(BuildContext context) {
-    // TODO(justinmc): Get rid of selected and just use FocusNodes?
-    if (selected && !_focusNode.hasFocus) {
+  void initState() {
+    super.initState();
+    if (widget.selected) {
       _focusNode.requestFocus();
     }
+    _focusNode.addListener(_onChangeFocus);
+  }
 
+  @override
+  void didUpdateWidget(MarkWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selected && !oldWidget.selected) {
+      _focusNode.requestFocus();
+    } else if (!widget.selected && oldWidget.selected) {
+      _focusNode.unfocus();
+    }
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_onChangeFocus);
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Positioned(
-      left: mark.rect.topLeft.dx,
-      top: mark.rect.topLeft.dy,
+      left: widget.mark.rect.topLeft.dx,
+      top: widget.mark.rect.topLeft.dy,
       child: GestureDetector(
-        onTapDown: onTapDown,
-        onScaleStart: onScaleStart,
-        onScaleUpdate: onScaleUpdate,
-        onScaleEnd: onScaleEnd,
+        onTapDown: widget.onTapDown,
+        onScaleStart: widget.onScaleStart,
+        onScaleUpdate: widget.onScaleUpdate,
+        onScaleEnd: widget.onScaleEnd,
         // TODO(justinmc): Marching ants if you have time...
         child: Shortcuts(
           shortcuts: _adaptiveShortcuts,
-          child: Focus(
-            focusNode: _focusNode,
-            // TODO(justinmc): Also do circle?
-            child: Rectangle.mark(
-              mark: mark,
-              selected: selected,
+          child: DottedBorder(
+            color: _focusNode.hasFocus ? Colors.black : Colors.transparent,
+            dashPattern: const <double>[6, 3],
+            strokeWidth: 1,
+            child: _MarkVisual(
+              focusNode: _focusNode,
+              mark: widget.mark,
             ),
           ),
         ),
@@ -341,36 +416,77 @@ class MarkWidget extends StatelessWidget {
   }
 }
 
-class Rectangle extends StatelessWidget {
-  const Rectangle({
-    super.key,
-    required this.color,
-    required this.rect,
-    required this.selected,
+class _MarkVisual extends StatelessWidget {
+  const _MarkVisual({
+    required this.mark,
+    required this.focusNode,
   });
 
-  /// Create a [Rectangle] from a [Mark].
-  Rectangle.mark({
-    super.key,
-    required Mark mark,
-    required this.selected,
-  }) : color = mark.color,
-       rect = mark.rect;
-
-  final Color color;
-  final Rect rect;
-  final bool selected;
+  final FocusNode focusNode;
+  final Mark mark;
 
   @override
   Widget build(BuildContext context) {
-    return DottedBorder(
-      color: selected ? Colors.black : Colors.transparent,
-      dashPattern: const <double>[6, 3],
-      strokeWidth: 1,
+    switch (mark.type) {
+      // TODO(justinmc): Also do circle?
+      case (MarkType.rectangle):
+        return _RectangleMark(
+          focusNode: focusNode,
+          mark: mark,
+        );
+      case (MarkType.text):
+        return _TextMark(
+          focusNode: focusNode,
+          mark: mark,
+        );
+    }
+  }
+}
+
+class _RectangleMark extends StatelessWidget {
+  const _RectangleMark({
+    required this.mark,
+    required this.focusNode,
+  });
+
+  final FocusNode focusNode;
+  final Mark mark;
+
+  @override
+  Widget build(BuildContext context) {
+    return Focus(
+      focusNode: focusNode,
       child: Container(
-        color: color,
-        width: rect.width,
-        height: rect.height,
+        color: mark.color,
+        width: mark.rect.width,
+        height: mark.rect.height,
+      ),
+    );
+  }
+}
+
+class _TextMark extends StatelessWidget {
+  const _TextMark({
+    required this.focusNode,
+    required this.mark,
+  });
+
+  final FocusNode focusNode;
+  final Mark mark;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: kUglyGrey,
+      width: mark.rect.width,
+      height: mark.rect.height,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        // TODO(justinmc): A subclass of Mark with a TextEditingController to
+        // preserve the state of each field.
+        child: TextField(
+          focusNode: focusNode,
+        ),
       ),
     );
   }

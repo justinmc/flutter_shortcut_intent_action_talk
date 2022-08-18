@@ -7,6 +7,7 @@ enum Tool {
   pencil,
   rectangle,
   selection,
+  text,
 }
 
 final StateNotifierProvider<ToolSelectionsNotifier, ToolSelections> selectionsProvider =

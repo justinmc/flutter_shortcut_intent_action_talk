@@ -48,7 +48,7 @@ class Toolbar extends StatelessWidget {
             tool: Tool.pencil,
           ),
           ToolButton(
-            tool: Tool.pencil,
+            tool: Tool.text,
           ),
           ToolButton(
             tool: Tool.pencil,
@@ -93,6 +93,7 @@ class ToolButton extends ConsumerWidget {
     Tool.pencil: 'tool_pencil.png',
     Tool.rectangle: 'tool_rectangle.png',
     Tool.selection: 'tool_selection.png',
+    Tool.text: 'tool_text.png',
   };
 
   @override
