@@ -17,7 +17,14 @@ enum MarkType {
 
 @immutable
 class Mark {
-  const Mark({
+  Mark({
+    required this.color,
+    required this.rect,
+    required this.type,
+  }) : id = DateTime.now().millisecondsSinceEpoch;
+
+  const Mark._({
+    required this.id,
     required this.color,
     required this.rect,
     required this.type,
@@ -27,12 +34,15 @@ class Mark {
   final Rect rect;
   final MarkType type;
 
+  final int id;
+
   Mark copyWith({
     Color? color,
     Rect? rect,
     MarkType? type,
   }) {
-    return Mark(
+    return Mark._(
+      id: id,
       color: color ?? this.color,
       rect: rect ?? this.rect,
       type: type ?? this.type,

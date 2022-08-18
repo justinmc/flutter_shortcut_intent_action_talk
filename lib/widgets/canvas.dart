@@ -282,6 +282,7 @@ class _CanvasState extends ConsumerState<Canvas> {
                 child: Stack(
                   children: <Widget>[
                     ...marks.map((Mark mark) => MarkWidget(
+                      key: ValueKey(mark.id),
                       mark: mark,
                       onChangeFocus: (FocusNode focusNode) => _onMarkChangeFocus(mark, focusNode),
                       onScaleStart: canTranslate ? (ScaleStartDetails details) => _onScaleMarkStart(mark, details) : null,
@@ -484,7 +485,8 @@ class _TextMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      color: Colors.white,
       width: mark.rect.width,
       height: mark.rect.height,
       child: Padding(
