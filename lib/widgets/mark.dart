@@ -32,39 +32,6 @@ class MarkWidget extends StatefulWidget {
 class _MarkWidgetState extends State<MarkWidget> {
   final FocusNode _focusNode = FocusNode();
 
-  Map<SingleActivator, Intent> get _commonShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.backspace): DeleteMarkIntent(widget.mark),
-  };
-
-  Map<SingleActivator, Intent> get _appleShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.keyC, meta: true): CopyMarkIntent(widget.mark),
-    const SingleActivator(LogicalKeyboardKey.keyX, meta: true): CutMarkIntent(widget.mark),
-  };
-
-  Map<SingleActivator, Intent> get _nonAppleShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.keyC, control: true): CopyMarkIntent(widget.mark),
-    const SingleActivator(LogicalKeyboardKey.keyX, control: true): CutMarkIntent(widget.mark),
-  };
-
-  Map<SingleActivator, Intent> get _adaptiveShortcuts {
-    switch(defaultTargetPlatform) {
-      case TargetPlatform.android:
-      case TargetPlatform.windows:
-      case TargetPlatform.linux:
-      case TargetPlatform.fuchsia:
-        return <SingleActivator, Intent>{
-          ..._commonShortcuts,
-          ..._nonAppleShortcuts,
-        };
-      case TargetPlatform.iOS:
-      case TargetPlatform.macOS:
-        return <SingleActivator, Intent>{
-          ..._commonShortcuts,
-          ..._appleShortcuts,
-        };
-    }
-  }
-
   void _onChangeFocus() {
     if (widget.mark.selected != _focusNode.hasFocus) {
       widget.onChangeFocus(_focusNode);
@@ -101,16 +68,13 @@ class _MarkWidgetState extends State<MarkWidget> {
         onScaleUpdate: widget.onScaleUpdate,
         onScaleEnd: widget.onScaleEnd,
         // TODO(justinmc): Marching ants if you have time...
-        child: Shortcuts(
-          shortcuts: _adaptiveShortcuts,
-          child: DottedBorder(
-            color: widget.mark.selected ? Colors.black : Colors.transparent,
-            dashPattern: const <double>[6, 3],
-            strokeWidth: 1,
-            child: _MarkVisual(
-              focusNode: _focusNode,
-              mark: widget.mark,
-            ),
+        child: DottedBorder(
+          color: widget.mark.selected ? Colors.black : Colors.transparent,
+          dashPattern: const <double>[6, 3],
+          strokeWidth: 1,
+          child: _MarkVisual(
+            focusNode: _focusNode,
+            mark: widget.mark,
           ),
         ),
       ),
@@ -127,14 +91,50 @@ class _MarkVisual extends StatelessWidget {
   final FocusNode focusNode;
   final Mark mark;
 
+  Map<SingleActivator, Intent> get _commonShortcuts => <SingleActivator, Intent>{
+    const SingleActivator(LogicalKeyboardKey.backspace): DeleteMarkIntent(mark),
+  };
+
+  Map<SingleActivator, Intent> get _appleShortcuts => <SingleActivator, Intent>{
+    const SingleActivator(LogicalKeyboardKey.keyC, meta: true): CopyMarkIntent(mark),
+    const SingleActivator(LogicalKeyboardKey.keyX, meta: true): CutMarkIntent(mark),
+  };
+
+  Map<SingleActivator, Intent> get _nonAppleShortcuts => <SingleActivator, Intent>{
+    const SingleActivator(LogicalKeyboardKey.keyC, control: true): CopyMarkIntent(mark),
+    const SingleActivator(LogicalKeyboardKey.keyX, control: true): CutMarkIntent(mark),
+  };
+
+  Map<SingleActivator, Intent> get _adaptiveShortcuts {
+    switch(defaultTargetPlatform) {
+      case TargetPlatform.android:
+      case TargetPlatform.windows:
+      case TargetPlatform.linux:
+      case TargetPlatform.fuchsia:
+        return <SingleActivator, Intent>{
+          ..._commonShortcuts,
+          ..._nonAppleShortcuts,
+        };
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        return <SingleActivator, Intent>{
+          ..._commonShortcuts,
+          ..._appleShortcuts,
+        };
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     switch (mark.type) {
       // TODO(justinmc): Also do circle?
       case (MarkType.rectangle):
-        return _RectangleMark(
-          focusNode: focusNode,
-          mark: mark,
+        return Shortcuts(
+          shortcuts: _adaptiveShortcuts,
+          child: _RectangleMark(
+            focusNode: focusNode,
+            mark: mark,
+          ),
         );
       case (MarkType.text):
         return _TextMark(
@@ -167,7 +167,7 @@ class _RectangleMark extends StatelessWidget {
   }
 }
 
-class _TextMark extends StatelessWidget {
+class _TextMark extends StatefulWidget {
   const _TextMark({
     required this.focusNode,
     required this.mark,
@@ -177,19 +177,49 @@ class _TextMark extends StatelessWidget {
   final Mark mark;
 
   @override
+  __TextMarkState createState() => __TextMarkState();
+}
+
+class __TextMarkState extends State<_TextMark> {
+  final TextEditingController controller = TextEditingController();
+
+  void _onChangedController() {
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(_onChangedController);
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(_onChangedController);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      width: mark.rect.width,
-      height: mark.rect.height,
+      width: widget.mark.rect.width,
+      height: widget.mark.rect.height,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
-        // TODO(justinmc): Could swap this for Text when not selected.
-        child: TextField(
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
+        child: Shortcuts(
+          shortcuts: <SingleActivator, Intent>{
+            if (controller.text.isEmpty)
+              const SingleActivator(LogicalKeyboardKey.backspace): DeleteMarkIntent(widget.mark),
+          },
+          // TODO(justinmc): Could swap this for Text when not selected.
+          child: TextField(
+            controller: controller,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+            focusNode: widget.focusNode,
           ),
-          focusNode: focusNode,
         ),
       ),
     );
