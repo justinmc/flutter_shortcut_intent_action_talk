@@ -184,22 +184,33 @@ class _CanvasState extends ConsumerState<Canvas> {
       onScaleEnd: _onScaleEnd,
       onTapUp: _onTapUpCanvas,
       onTapDown: _onTapDownCanvas,
-      child: Focus(
-        focusNode: _focusNode,
-        child: Container(
-          color: Colors.white,
-          child: Stack(
-            children: <Widget>[
-              ...marks.map((Mark mark) => MarkWidget(
-                key: ValueKey(mark.id),
-                mark: mark,
-                onChangeFocus: (FocusNode focusNode) => _onMarkChangeFocus(mark, focusNode),
-                onScaleStart: canTranslate ? (ScaleStartDetails details) => _onScaleMarkStart(mark, details) : null,
-                onScaleUpdate: canTranslate ? (ScaleUpdateDetails details) => _onScaleMarkUpdate(mark, details) : null,
-                onScaleEnd: canTranslate ? (ScaleEndDetails details) => _onScaleMarkEnd(mark, details) : null,
-                onTapDown: (TapDownDetails details) => _onTapDownMark(mark),
-              )),
-            ],
+      child: Actions(
+        actions: <Type, Action<Intent>>{
+          DeleteMarkIntent: CallbackAction<DeleteMarkIntent>(
+            onInvoke: (DeleteMarkIntent intent) {
+              setState(() {
+                ref.read(marksProvider).remove(intent.mark);
+              });
+            },
+          ),
+        },
+        child: Focus(
+          focusNode: _focusNode,
+          child: Container(
+            color: Colors.white,
+            child: Stack(
+              children: <Widget>[
+                ...marks.map((Mark mark) => MarkWidget(
+                  key: ValueKey(mark.id),
+                  mark: mark,
+                  onChangeFocus: (FocusNode focusNode) => _onMarkChangeFocus(mark, focusNode),
+                  onScaleStart: canTranslate ? (ScaleStartDetails details) => _onScaleMarkStart(mark, details) : null,
+                  onScaleUpdate: canTranslate ? (ScaleUpdateDetails details) => _onScaleMarkUpdate(mark, details) : null,
+                  onScaleEnd: canTranslate ? (ScaleEndDetails details) => _onScaleMarkEnd(mark, details) : null,
+                  onTapDown: (TapDownDetails details) => _onTapDownMark(mark),
+                )),
+              ],
+            ),
           ),
         ),
       ),

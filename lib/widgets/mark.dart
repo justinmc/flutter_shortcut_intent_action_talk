@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/services.dart';
 
 import '../data/marks.dart';
 
@@ -66,13 +67,18 @@ class _MarkWidgetState extends State<MarkWidget> {
         onScaleUpdate: widget.onScaleUpdate,
         onScaleEnd: widget.onScaleEnd,
         // TODO(justinmc): Marching ants if you have time...
-        child: DottedBorder(
-          color: widget.mark.selected ? Colors.black : Colors.transparent,
-          dashPattern: const <double>[6, 3],
-          strokeWidth: 1,
-          child: _MarkVisual(
-            focusNode: _focusNode,
-            mark: widget.mark,
+        child: Shortcuts(
+          shortcuts: <ShortcutActivator, Intent>{
+            SingleActivator(LogicalKeyboardKey.backspace): DeleteMarkIntent(mark: widget.mark),
+          },
+          child: DottedBorder(
+            color: widget.mark.selected ? Colors.black : Colors.transparent,
+            dashPattern: const <double>[6, 3],
+            strokeWidth: 1,
+            child: _MarkVisual(
+              focusNode: _focusNode,
+              mark: widget.mark,
+            ),
           ),
         ),
       ),
@@ -180,4 +186,12 @@ class __TextMarkState extends State<_TextMark> {
       ),
     );
   }
+}
+
+class DeleteMarkIntent extends Intent {
+  const DeleteMarkIntent({
+    required this.mark,
+  });
+
+  final Mark mark;
 }
