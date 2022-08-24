@@ -208,12 +208,13 @@ class __TextMarkState extends State<_TextMark> {
       height: widget.mark.rect.height,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
+        // NEW: A Shortcuts widget only for TextMark that is used only when the
+        // text is empty.
         child: Shortcuts(
           shortcuts: <SingleActivator, Intent>{
             if (controller.text.isEmpty)
               const SingleActivator(LogicalKeyboardKey.backspace): DeleteMarkIntent(widget.mark),
           },
-          // TODO(justinmc): Could swap this for Text when not selected.
           child: TextField(
             controller: controller,
             decoration: const InputDecoration(
