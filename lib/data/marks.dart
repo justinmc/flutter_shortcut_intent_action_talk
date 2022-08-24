@@ -23,7 +23,7 @@ class Mark {
     required this.type,
     int? id,
     this.selected = false,
-  }) : id = id ?? DateTime.now().millisecondsSinceEpoch;
+  }) : id = id ?? randomId;
 
   final Color color;
   final Rect rect;
@@ -31,6 +31,8 @@ class Mark {
   final MarkType type;
 
   final int id;
+
+  static int get randomId => DateTime.now().millisecondsSinceEpoch;
 
   Mark copyWith({
     Color? color,
