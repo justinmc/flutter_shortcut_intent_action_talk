@@ -8,6 +8,7 @@ A simplified drawing app.  Demonstrates [Actions](https://master-api.flutter.dev
 
   1. Starting point [canvas.dart](https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/1-of-2/lib/widgets/canvas.dart), [mark.dart](https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/1-of-2/lib/widgets/mark.dart)
   1. Final with keyboard shortcuts working [canvas.dart](https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/2-of-2/lib/widgets/canvas.dart), [mark.dart](https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/2-of-2/lib/widgets/mark.dart)
+  1. Final delete example [canvas.dart](https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/ending-point-delete-text/lib/widgets/mark.dart), [mark.dart](https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/ending-point-delete-text/lib/widgets/mark.dart)
 
 ## All demos from the talk
 
