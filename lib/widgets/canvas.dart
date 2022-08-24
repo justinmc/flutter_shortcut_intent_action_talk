@@ -269,6 +269,7 @@ class _CanvasState extends ConsumerState<Canvas> {
               color: Colors.white,
               child: Stack(
                 children: <Widget>[
+                  // TODO(justinmc): Sort by created or interacted timestamp.
                   ...marks.map((Mark mark) => MarkWidget(
                     key: ValueKey(mark.id),
                     mark: mark,
