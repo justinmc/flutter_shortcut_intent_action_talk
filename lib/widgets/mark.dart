@@ -44,6 +44,42 @@ class _MarkWidgetState extends State<MarkWidget> {
     widget.onTapDown(details);
   }
 
+  // NEW: Cross-platform Intent mappings for Shortcuts.
+  Map<SingleActivator, Intent> get _commonShortcuts => <SingleActivator, Intent>{
+    const SingleActivator(LogicalKeyboardKey.backspace): DeleteMarkIntent(widget.mark),
+  };
+
+  Map<SingleActivator, Intent> get _appleShortcuts => <SingleActivator, Intent>{
+    const SingleActivator(LogicalKeyboardKey.keyC, meta: true): CopyMarkIntent(widget.mark),
+    const SingleActivator(LogicalKeyboardKey.keyV, meta: true): const PasteMarkIntent(),
+    const SingleActivator(LogicalKeyboardKey.keyX, meta: true): CutMarkIntent(widget.mark),
+  };
+
+  Map<SingleActivator, Intent> get _nonAppleShortcuts => <SingleActivator, Intent>{
+    const SingleActivator(LogicalKeyboardKey.keyC, control: true): CopyMarkIntent(widget.mark),
+    const SingleActivator(LogicalKeyboardKey.keyV, control: true): const PasteMarkIntent(),
+    const SingleActivator(LogicalKeyboardKey.keyX, control: true): CutMarkIntent(widget.mark),
+  };
+
+  Map<SingleActivator, Intent> get _adaptiveShortcuts {
+    switch(defaultTargetPlatform) {
+      case TargetPlatform.android:
+      case TargetPlatform.windows:
+      case TargetPlatform.linux:
+      case TargetPlatform.fuchsia:
+        return <SingleActivator, Intent>{
+          ..._commonShortcuts,
+          ..._nonAppleShortcuts,
+        };
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        return <SingleActivator, Intent>{
+          ..._commonShortcuts,
+          ..._appleShortcuts,
+        };
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -68,14 +104,17 @@ class _MarkWidgetState extends State<MarkWidget> {
         onScaleStart: widget.onScaleStart,
         onScaleUpdate: widget.onScaleUpdate,
         onScaleEnd: widget.onScaleEnd,
-        // TODO: Support keyboard interactions. Listen with Shortcuts here.
-        child: DottedBorder(
-          color: widget.mark.selected ? Colors.black : Colors.transparent,
-          dashPattern: const <double>[6, 3],
-          strokeWidth: 1,
-          child: _MarkVisual(
-            focusNode: _focusNode,
-            mark: widget.mark,
+        // NEW: Shortcuts widget that listens per-Mark.
+        child: Shortcuts(
+          shortcuts: _adaptiveShortcuts,
+          child: DottedBorder(
+            color: widget.mark.selected ? Colors.black : Colors.transparent,
+            dashPattern: const <double>[6, 3],
+            strokeWidth: 1,
+            child: _MarkVisual(
+              focusNode: _focusNode,
+              mark: widget.mark,
+            ),
           ),
         ),
       ),
@@ -190,6 +229,8 @@ class __TextMarkState extends State<_TextMark> {
   }
 }
 
+// NEW: Intents representing our keyboard interactions that include the affected
+// Mark.
 class _MarkIntent extends Intent {
   const _MarkIntent(
     this.mark,
