@@ -68,7 +68,7 @@ class _MarkWidgetState extends State<MarkWidget> {
         onScaleStart: widget.onScaleStart,
         onScaleUpdate: widget.onScaleUpdate,
         onScaleEnd: widget.onScaleEnd,
-        // TODO(justinmc): Marching ants if you have time...
+        // TODO: Support keyboard interactions. Listen with Shortcuts here.
         child: DottedBorder(
           color: widget.mark.selected ? Colors.black : Colors.transparent,
           dashPattern: const <double>[6, 3],
@@ -92,50 +92,13 @@ class _MarkVisual extends StatelessWidget {
   final FocusNode focusNode;
   final Mark mark;
 
-  Map<SingleActivator, Intent> get _commonShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.backspace): DeleteMarkIntent(mark),
-  };
-
-  Map<SingleActivator, Intent> get _appleShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.keyC, meta: true): CopyMarkIntent(mark),
-    const SingleActivator(LogicalKeyboardKey.keyX, meta: true): CutMarkIntent(mark),
-  };
-
-  Map<SingleActivator, Intent> get _nonAppleShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.keyC, control: true): CopyMarkIntent(mark),
-    const SingleActivator(LogicalKeyboardKey.keyX, control: true): CutMarkIntent(mark),
-  };
-
-  Map<SingleActivator, Intent> get _adaptiveShortcuts {
-    switch(defaultTargetPlatform) {
-      case TargetPlatform.android:
-      case TargetPlatform.windows:
-      case TargetPlatform.linux:
-      case TargetPlatform.fuchsia:
-        return <SingleActivator, Intent>{
-          ..._commonShortcuts,
-          ..._nonAppleShortcuts,
-        };
-      case TargetPlatform.iOS:
-      case TargetPlatform.macOS:
-        return <SingleActivator, Intent>{
-          ..._commonShortcuts,
-          ..._appleShortcuts,
-        };
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     switch (mark.type) {
-      // TODO(justinmc): Also do circle?
       case (MarkType.rectangle):
-        return Shortcuts(
-          shortcuts: _adaptiveShortcuts,
-          child: _RectangleMark(
-            focusNode: focusNode,
-            mark: mark,
-          ),
+        return _RectangleMark(
+          focusNode: focusNode,
+          mark: mark,
         );
       case (MarkType.text):
         return _TextMark(
