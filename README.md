@@ -1,6 +1,6 @@
 # Flutter Vikings 2022 Talk - Custom User Interactions - Drawing Demo
 
-A live demo for my talk for Flutter Vikings 2022 - Custom User Interactions.
+A live demo for my talk for Flutter Vikings 2022 - Custom User Interactions ([slides](https://docs.google.com/presentation/d/1hUsKF8Vly72-Phcn7L9ikjJlFYFLUirNt1oGWu_BBSU/edit#slide=id.g147a725c12b_0_20)).
 
 A simplified drawing app.  Demonstrates [Actions](https://master-api.flutter.dev/flutter/widgets/Actions-class.html) and [Shortcuts](https://master-api.flutter.dev/flutter/widgets/Shortcuts-class.html) in a real app, as well as text editing shortcuts with [DefaultTextEditingShortcuts](https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/widgets/default_text_editing_shortcuts.dart).
 
