@@ -174,65 +174,6 @@ class _CanvasState extends ConsumerState<Canvas> {
     */
   }
 
-  void _onCopyMark(Mark mark) {
-    _copiedMark = mark;
-  }
-
-  void _onCutMark(Mark mark) {
-    _copiedMark = mark;
-    ref.read(marksProvider.notifier).remove(mark);
-  }
-
-  void _onDeleteMark(Mark mark) {
-    ref.read(marksProvider.notifier).remove(mark);
-  }
-
-  void _onPasteMark() {
-    if (_copiedMark == null) {
-      return;
-    }
-    final Offset offset = _nextPasteOffset ?? _copiedMark!.rect.topLeft + _kPasteOffset;
-    setState(() {
-      final Mark pastedMark = _copiedMark!.copyWith(
-        id: Mark.randomId,
-        rect: offset & _copiedMark!.rect.size,
-        selected: true,
-      );
-      ref.read(marksProvider.notifier).add(pastedMark);
-      _nextPasteOffset = offset + _kPasteOffset;
-    });
-  }
-
-  Map<SingleActivator, Intent> get _commonShortcuts => <SingleActivator, Intent>{
-  };
-
-  Map<SingleActivator, Intent> get _appleShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.keyV, meta: true): const PasteMarkIntent(),
-  };
-
-  Map<SingleActivator, Intent> get _nonAppleShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.keyV, control: true): const PasteMarkIntent(),
-  };
-
-  Map<SingleActivator, Intent> get _adaptiveShortcuts {
-    switch(defaultTargetPlatform) {
-      case TargetPlatform.android:
-      case TargetPlatform.windows:
-      case TargetPlatform.linux:
-      case TargetPlatform.fuchsia:
-        return <SingleActivator, Intent>{
-          ..._commonShortcuts,
-          ..._nonAppleShortcuts,
-        };
-      case TargetPlatform.iOS:
-      case TargetPlatform.macOS:
-        return <SingleActivator, Intent>{
-          ..._commonShortcuts,
-          ..._appleShortcuts,
-        };
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final Set<Mark> marks = ref.watch(marksProvider);
@@ -246,42 +187,23 @@ class _CanvasState extends ConsumerState<Canvas> {
       onScaleEnd: _onScaleEnd,
       onTapUp: _onTapUpCanvas,
       onTapDown: _onTapDownCanvas,
-      child: Actions(
-        actions: <Type, Action<Intent>>{
-          CopyMarkIntent: CallbackAction<CopyMarkIntent>(
-            onInvoke: (CopyMarkIntent intent) => _onCopyMark(intent.mark),
-          ),
-          CutMarkIntent: CallbackAction<CutMarkIntent>(
-            onInvoke: (CutMarkIntent intent) => _onCutMark(intent.mark),
-          ),
-          PasteMarkIntent: CallbackAction<PasteMarkIntent>(
-            onInvoke: (PasteMarkIntent intent) => _onPasteMark(),
-          ),
-          DeleteMarkIntent: CallbackAction<DeleteMarkIntent>(
-            onInvoke: (DeleteMarkIntent intent) => _onDeleteMark(intent.mark),
-          ),
-        },
-        child: Shortcuts(
-          shortcuts: _adaptiveShortcuts,
-          child: Focus(
-            focusNode: _focusNode,
-            child: Container(
-              color: Colors.white,
-              child: Stack(
-                children: <Widget>[
-                  // TODO(justinmc): Sort by created or interacted timestamp.
-                  ...marks.map((Mark mark) => MarkWidget(
-                    key: ValueKey(mark.id),
-                    mark: mark,
-                    onChangeFocus: (FocusNode focusNode) => _onMarkChangeFocus(mark, focusNode),
-                    onScaleStart: canTranslate ? (ScaleStartDetails details) => _onScaleMarkStart(mark, details) : null,
-                    onScaleUpdate: canTranslate ? (ScaleUpdateDetails details) => _onScaleMarkUpdate(mark, details) : null,
-                    onScaleEnd: canTranslate ? (ScaleEndDetails details) => _onScaleMarkEnd(mark, details) : null,
-                    onTapDown: (TapDownDetails details) => _onTapDownMark(mark),
-                  )),
-                ],
-              ),
-            ),
+      // TODO: Support keyboard interactions. Receive Intents with Actions here.
+      child: Focus(
+        focusNode: _focusNode,
+        child: Container(
+          color: Colors.white,
+          child: Stack(
+            children: <Widget>[
+              ...marks.map((Mark mark) => MarkWidget(
+                key: ValueKey(mark.id),
+                mark: mark,
+                onChangeFocus: (FocusNode focusNode) => _onMarkChangeFocus(mark, focusNode),
+                onScaleStart: canTranslate ? (ScaleStartDetails details) => _onScaleMarkStart(mark, details) : null,
+                onScaleUpdate: canTranslate ? (ScaleUpdateDetails details) => _onScaleMarkUpdate(mark, details) : null,
+                onScaleEnd: canTranslate ? (ScaleEndDetails details) => _onScaleMarkEnd(mark, details) : null,
+                onTapDown: (TapDownDetails details) => _onTapDownMark(mark),
+              )),
+            ],
           ),
         ),
       ),
