@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:dotted_border/dotted_border.dart';
 
 import '../data/marks.dart';
@@ -91,50 +89,14 @@ class _MarkVisual extends StatelessWidget {
   final FocusNode focusNode;
   final Mark mark;
 
-  Map<SingleActivator, Intent> get _commonShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.backspace): DeleteMarkIntent(mark),
-  };
-
-  Map<SingleActivator, Intent> get _appleShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.keyC, meta: true): CopyMarkIntent(mark),
-    const SingleActivator(LogicalKeyboardKey.keyX, meta: true): CutMarkIntent(mark),
-  };
-
-  Map<SingleActivator, Intent> get _nonAppleShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.keyC, control: true): CopyMarkIntent(mark),
-    const SingleActivator(LogicalKeyboardKey.keyX, control: true): CutMarkIntent(mark),
-  };
-
-  Map<SingleActivator, Intent> get _adaptiveShortcuts {
-    switch(defaultTargetPlatform) {
-      case TargetPlatform.android:
-      case TargetPlatform.windows:
-      case TargetPlatform.linux:
-      case TargetPlatform.fuchsia:
-        return <SingleActivator, Intent>{
-          ..._commonShortcuts,
-          ..._nonAppleShortcuts,
-        };
-      case TargetPlatform.iOS:
-      case TargetPlatform.macOS:
-        return <SingleActivator, Intent>{
-          ..._commonShortcuts,
-          ..._appleShortcuts,
-        };
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     switch (mark.type) {
       // TODO(justinmc): Also do circle?
       case (MarkType.rectangle):
-        return Shortcuts(
-          shortcuts: _adaptiveShortcuts,
-          child: _RectangleMark(
-            focusNode: focusNode,
-            mark: mark,
-          ),
+        return _RectangleMark(
+          focusNode: focusNode,
+          mark: mark,
         );
       case (MarkType.text):
         return _TextMark(
@@ -207,52 +169,15 @@ class __TextMarkState extends State<_TextMark> {
       height: widget.mark.rect.height,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Shortcuts(
-          shortcuts: <SingleActivator, Intent>{
-            if (controller.text.isEmpty)
-              const SingleActivator(LogicalKeyboardKey.backspace): DeleteMarkIntent(widget.mark),
-          },
-          // TODO(justinmc): Could swap this for Text when not selected.
-          child: TextField(
-            controller: controller,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-            ),
-            focusNode: widget.focusNode,
+        // TODO(justinmc): Could swap this for Text when not selected.
+        child: TextField(
+          controller: controller,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
           ),
+          focusNode: widget.focusNode,
         ),
       ),
     );
   }
-}
-
-class _MarkIntent extends Intent {
-  const _MarkIntent(
-    this.mark,
-  );
-
-  final Mark mark;
-}
-
-class CopyMarkIntent extends _MarkIntent {
-  const CopyMarkIntent(
-    super.mark,
-  );
-}
-
-class CutMarkIntent extends _MarkIntent {
-  const CutMarkIntent(
-    super.mark,
-  );
-}
-
-class DeleteMarkIntent extends _MarkIntent {
-  const DeleteMarkIntent(
-    super.mark,
-  );
-}
-
-class PasteMarkIntent extends Intent {
-  const PasteMarkIntent(
-  );
 }
