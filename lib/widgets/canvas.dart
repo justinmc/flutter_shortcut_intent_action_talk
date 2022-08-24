@@ -112,6 +112,7 @@ class _CanvasState extends ConsumerState<Canvas> {
   }
 
   void _onTapDownCanvas(TapDownDetails details) {
+    // TODO(justinmc): This is sometimes called after tapping a Mark.
     ref.read(marksProvider.notifier).unselectAll();
   }
 

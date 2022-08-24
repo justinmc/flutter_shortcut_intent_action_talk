@@ -63,6 +63,7 @@ class _MarkWidgetState extends State<MarkWidget> {
       left: widget.mark.rect.topLeft.dx,
       top: widget.mark.rect.topLeft.dy,
       child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTapDown: _onTapDown,
         onScaleStart: widget.onScaleStart,
         onScaleUpdate: widget.onScaleUpdate,
