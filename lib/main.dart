@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'actions_page/actions_page.dart';
+import 'actions_page/actions_page_2.dart';
+import 'actions_page/actions_page_3.dart';
 import 'paint_page/paint_page.dart';
 
 void main() {
@@ -19,6 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Validation Sandbox',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -27,6 +31,9 @@ class MyApp extends StatelessWidget {
       routes: <String, Widget Function(BuildContext)>{
         '/': (BuildContext context) => const MyHomePage(),
         PaintPage.route: (BuildContext context) => const PaintPage(),
+        ActionsPage.route: (BuildContext context) => const ActionsPage(),
+        ActionsPageTwo.route: (BuildContext context) => const ActionsPageTwo(),
+        ActionsPageThree.route: (BuildContext context) => const ActionsPageThree(),
       },
     );
   }
@@ -43,6 +50,11 @@ class MyHomePage extends StatelessWidget {
       ),
       body: ListView(
         children: const <Widget>[
+          MyListItem(
+            route: ActionsPage.route,
+            title: ActionsPage.title,
+            subtitle: ActionsPage.subtitle,
+          ),
           MyListItem(
             route: PaintPage.route,
             title: PaintPage.title,

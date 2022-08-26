@@ -10,7 +10,7 @@ class PaintPage extends StatelessWidget {
     super.key,
   });
 
-  static const String route = 'paint_page';
+  static const String route = 'paint';
   static const String title = 'Flutter Paint Demo';
   static const String subtitle = 'A simple drawing app with keyboard shortcuts.';
 
