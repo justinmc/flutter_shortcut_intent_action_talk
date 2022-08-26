@@ -112,6 +112,9 @@ class _CanvasState extends ConsumerState<Canvas> {
           type: MarkType.text,
         );
         ref.read(marksProvider.notifier).add(mark);
+        ref.read(selectionsProvider.notifier).update(
+          tool: Tool.pointer,
+        );
         break;
     }
   }
