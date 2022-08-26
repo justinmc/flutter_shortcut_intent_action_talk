@@ -31,52 +31,52 @@ class Toolbar extends StatelessWidget {
         mainAxisSpacing: 10,
         crossAxisCount: 2,
         children: const <Widget>[
-          ToolButton(
+          _ToolButton(
             tool: Tool.pointer,
           ),
-          ToolButton(
+          _ToolButton(
             tool: Tool.selection,
           ),
-          ToolButton(
+          _ToolButton(
             tool: Tool.pencil,
           ),
-          ToolButton(
+          _ToolButton(
             tool: Tool.pencil,
           ),
-          ToolButton(
+          _ToolButton(
             tool: Tool.pencil,
           ),
-          ToolButton(
+          _ToolButton(
             tool: Tool.pencil,
           ),
-          ToolButton(
+          _ToolButton(
             tool: Tool.pencil,
           ),
-          ToolButton(
+          _ToolButton(
             tool: Tool.pencil,
           ),
-          ToolButton(
+          _ToolButton(
             tool: Tool.text,
           ),
-          ToolButton(
+          _ToolButton(
             tool: Tool.pencil,
           ),
-          ToolButton(
+          _ToolButton(
             tool: Tool.pencil,
           ),
-          ToolButton(
+          _ToolButton(
             tool: Tool.pencil,
           ),
-          ToolButton(
+          _ToolButton(
             tool: Tool.rectangle,
           ),
-          ToolButton(
+          _ToolButton(
             tool: Tool.pencil,
           ),
-          ToolButton(
+          _ToolButton(
             tool: Tool.circle,
           ),
-          ToolButton(
+          _ToolButton(
             tool: Tool.pencil,
           ),
         ],
@@ -85,9 +85,8 @@ class Toolbar extends StatelessWidget {
   }
 }
 
-class ToolButton extends ConsumerWidget {
-  const ToolButton({
-    super.key,
+class _ToolButton extends ConsumerWidget {
+  const _ToolButton({
     required this.tool,
   });
 
