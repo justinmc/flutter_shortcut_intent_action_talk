@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shortcut_intent_action_talk/widgets/toolbar.dart';
 
+import 'unimplemented_dialog.dart';
+
 class MenuBar extends StatelessWidget {
   const MenuBar({
     super.key,
@@ -11,29 +13,23 @@ class MenuBar extends StatelessWidget {
     return Container(
       color: kUglyGrey,
         child: Row(
-        children: <Widget>[
+        children: const <Widget>[
           _MenuButton(
-            onPressed: () {},
             text: 'File',
           ),
           _MenuButton(
-            onPressed: () {},
             text: 'Option',
           ),
           _MenuButton(
-            onPressed: () {},
             text: 'View',
           ),
           _MenuButton(
-            onPressed: () {},
             text: 'Image',
           ),
           _MenuButton(
-            onPressed: () {},
             text: 'Options',
           ),
           _MenuButton(
-            onPressed: () {},
             text: 'Help',
           ),
         ],
@@ -44,11 +40,9 @@ class MenuBar extends StatelessWidget {
 
 class _MenuButton extends StatelessWidget {
   const _MenuButton({
-    required this.onPressed,
     required this.text,
   });
 
-  final VoidCallback onPressed;
   final String text;
 
   @override
@@ -57,7 +51,14 @@ class _MenuButton extends StatelessWidget {
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
       ),
-      onPressed: onPressed,
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return const UnimplementedDialog();
+          },
+        );
+      },
       child: Text(text),
     );
   }

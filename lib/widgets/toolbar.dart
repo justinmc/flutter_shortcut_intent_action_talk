@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/tool_selections.dart';
+import 'unimplemented_dialog.dart';
 
 const kUglyGrey = Color(0xffe0dfe3);
 
@@ -120,6 +121,15 @@ class ToolButton extends ConsumerWidget {
         ),
       ),
       onPressed: () {
+        if (Tool.unimplemented.contains(tool)) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const UnimplementedDialog();
+            },
+          );
+          return;
+        }
         ref.read(selectionsProvider.notifier).update(
           tool: tool,
         );

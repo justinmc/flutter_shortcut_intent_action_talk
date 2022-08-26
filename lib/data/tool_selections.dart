@@ -7,7 +7,12 @@ enum Tool {
   pencil,
   rectangle,
   selection,
-  text,
+  text;
+
+  static Set<Tool> get unimplemented => <Tool>{
+    Tool.circle,
+    Tool.pencil,
+  };
 }
 
 final StateNotifierProvider<ToolSelectionsNotifier, ToolSelections> selectionsProvider =
