@@ -60,6 +60,19 @@ class MarksNotifier extends StateNotifier<Set<Mark>> {
   MarksNotifier(
   ) : super(<Mark>{});
 
+  static Set<Mark> _selectAll(Set<Mark> state) {
+    final Set<Mark>nextState = <Mark>{};
+
+    for (Mark mark in state) {
+      if (!mark.selected) {
+        nextState.add(mark.copyWith(selected: true));
+      } else {
+        nextState.add(mark);
+      }
+    }
+    return nextState;
+  }
+
   static Set<Mark> _unselectAll(Set<Mark> state) {
     final Set<Mark>nextState = <Mark>{};
 
@@ -97,6 +110,21 @@ class MarksNotifier extends StateNotifier<Set<Mark>> {
 
     final Set<Mark> nextState = <Mark>{...state};
     nextState.remove(mark);
+    state = nextState;
+  }
+
+  /// Removes all selected Marks.
+  ///
+  /// If none are selected, does nothing.
+  void removeSelected() {
+    assert(_containsNoDuplicateIds());
+
+    final Set<Mark> nextState = <Mark>{};
+    for (Mark mark in state) {
+      if (!mark.selected) {
+        nextState.add(mark);
+      }
+    }
     state = nextState;
   }
 
@@ -151,6 +179,10 @@ class MarksNotifier extends StateNotifier<Set<Mark>> {
     }
     state = _unselectAll(state)
         ..add(mark);
+  }
+
+  void selectAll() {
+    state = _selectAll(state);
   }
 
   void unselectAll() {

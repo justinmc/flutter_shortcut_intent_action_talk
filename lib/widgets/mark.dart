@@ -83,6 +83,7 @@ class _MarkWidgetState extends State<MarkWidget> {
   }
 }
 
+// Build the right Mark for the given Mark.type.
 class _MarkVisual extends StatelessWidget {
   const _MarkVisual({
     required this.mark,
@@ -92,8 +93,34 @@ class _MarkVisual extends StatelessWidget {
   final FocusNode focusNode;
   final Mark mark;
 
+  @override
+  Widget build(BuildContext context) {
+    switch (mark.type) {
+      case (MarkType.rectangle):
+        return _RectangleMark(
+          focusNode: focusNode,
+          mark: mark,
+        );
+      case (MarkType.text):
+        return _TextMark(
+          focusNode: focusNode,
+          mark: mark,
+        );
+    }
+  }
+}
+
+class _RectangleMark extends StatelessWidget {
+  const _RectangleMark({
+    required this.mark,
+    required this.focusNode,
+  });
+
+  final FocusNode focusNode;
+  final Mark mark;
+
   Map<SingleActivator, Intent> get _commonShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.backspace): DeleteMarkIntent(mark),
+    const SingleActivator(LogicalKeyboardKey.backspace): const DeleteSelectedMarkIntent(),
   };
 
   Map<SingleActivator, Intent> get _appleShortcuts => <SingleActivator, Intent>{
@@ -127,42 +154,15 @@ class _MarkVisual extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    switch (mark.type) {
-      // TODO(justinmc): Also do circle?
-      case (MarkType.rectangle):
-        return Shortcuts(
-          shortcuts: _adaptiveShortcuts,
-          child: _RectangleMark(
-            focusNode: focusNode,
-            mark: mark,
-          ),
-        );
-      case (MarkType.text):
-        return _TextMark(
-          focusNode: focusNode,
-          mark: mark,
-        );
-    }
-  }
-}
-
-class _RectangleMark extends StatelessWidget {
-  const _RectangleMark({
-    required this.mark,
-    required this.focusNode,
-  });
-
-  final FocusNode focusNode;
-  final Mark mark;
-
-  @override
-  Widget build(BuildContext context) {
-    return Focus(
-      focusNode: focusNode,
-      child: Container(
-        color: mark.color,
-        width: mark.rect.width,
-        height: mark.rect.height,
+    return Shortcuts(
+      shortcuts: _adaptiveShortcuts,
+      child: Focus(
+        focusNode: focusNode,
+        child: Container(
+          color: mark.color,
+          width: mark.rect.width,
+          height: mark.rect.height,
+        ),
       ),
     );
   }
@@ -178,10 +178,10 @@ class _TextMark extends StatefulWidget {
   final Mark mark;
 
   @override
-  __TextMarkState createState() => __TextMarkState();
+  _TextMarkState createState() => _TextMarkState();
 }
 
-class __TextMarkState extends State<_TextMark> {
+class _TextMarkState extends State<_TextMark> {
   final TextEditingController controller = TextEditingController();
 
   void _onChangedController() {
@@ -211,9 +211,11 @@ class __TextMarkState extends State<_TextMark> {
         child: Shortcuts(
           shortcuts: <SingleActivator, Intent>{
             if (controller.text.isEmpty)
-              const SingleActivator(LogicalKeyboardKey.backspace): DeleteMarkIntent(widget.mark),
+              const SingleActivator(LogicalKeyboardKey.backspace): const DeleteSelectedMarkIntent(),
+            if (controller.text.isNotEmpty)
+              const SingleActivator(LogicalKeyboardKey.backspace): const DeleteCharacterIntent(forward: false),
+            const SingleActivator(LogicalKeyboardKey.keyA, meta: true): const SelectAllTextIntent(SelectionChangedCause.keyboard),
           },
-          // TODO(justinmc): Could swap this for Text when not selected.
           child: TextField(
             controller: controller,
             decoration: const InputDecoration(
@@ -247,13 +249,6 @@ class CutMarkIntent extends _MarkIntent {
   );
 }
 
-class DeleteMarkIntent extends _MarkIntent {
-  const DeleteMarkIntent(
-    super.mark,
-  );
-}
-
-class PasteMarkIntent extends Intent {
-  const PasteMarkIntent(
-  );
+class DeleteSelectedMarkIntent extends Intent {
+  const DeleteSelectedMarkIntent();
 }

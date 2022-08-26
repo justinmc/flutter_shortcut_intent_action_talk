@@ -191,8 +191,12 @@ class _CanvasState extends ConsumerState<Canvas> {
     ref.read(marksProvider.notifier).remove(mark);
   }
 
-  void _onDeleteMark(Mark mark) {
-    ref.read(marksProvider.notifier).remove(mark);
+  void _onDeleteSelectedMark() {
+    ref.read(marksProvider.notifier).removeSelected();
+  }
+
+  void _selectAllMarks() {
+    ref.read(marksProvider.notifier).selectAll();
   }
 
   void _onPasteMark() {
@@ -212,14 +216,17 @@ class _CanvasState extends ConsumerState<Canvas> {
   }
 
   Map<SingleActivator, Intent> get _commonShortcuts => <SingleActivator, Intent>{
+    const SingleActivator(LogicalKeyboardKey.backspace): const DeleteSelectedMarkIntent(),
   };
 
   Map<SingleActivator, Intent> get _appleShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.keyV, meta: true): const PasteMarkIntent(),
+    const SingleActivator(LogicalKeyboardKey.keyA, meta: true): const _SelectAllMarksIntent(),
+    const SingleActivator(LogicalKeyboardKey.keyV, meta: true): const _PasteMarkIntent(),
   };
 
   Map<SingleActivator, Intent> get _nonAppleShortcuts => <SingleActivator, Intent>{
-    const SingleActivator(LogicalKeyboardKey.keyV, control: true): const PasteMarkIntent(),
+    const SingleActivator(LogicalKeyboardKey.keyA, control: true): const _SelectAllMarksIntent(),
+    const SingleActivator(LogicalKeyboardKey.keyV, control: true): const _PasteMarkIntent(),
   };
 
   Map<SingleActivator, Intent> get _adaptiveShortcuts {
@@ -262,11 +269,14 @@ class _CanvasState extends ConsumerState<Canvas> {
           CutMarkIntent: CallbackAction<CutMarkIntent>(
             onInvoke: (CutMarkIntent intent) => _onCutMark(intent.mark),
           ),
-          PasteMarkIntent: CallbackAction<PasteMarkIntent>(
-            onInvoke: (PasteMarkIntent intent) => _onPasteMark(),
+          _PasteMarkIntent: CallbackAction<_PasteMarkIntent>(
+            onInvoke: (_PasteMarkIntent intent) => _onPasteMark(),
           ),
-          DeleteMarkIntent: CallbackAction<DeleteMarkIntent>(
-            onInvoke: (DeleteMarkIntent intent) => _onDeleteMark(intent.mark),
+          DeleteSelectedMarkIntent: CallbackAction<DeleteSelectedMarkIntent>(
+            onInvoke: (DeleteSelectedMarkIntent intent) => _onDeleteSelectedMark(),
+          ),
+          _SelectAllMarksIntent: CallbackAction<_SelectAllMarksIntent>(
+            onInvoke: (_SelectAllMarksIntent intent) => _selectAllMarks(),
           ),
         },
         child: Shortcuts(
@@ -295,4 +305,13 @@ class _CanvasState extends ConsumerState<Canvas> {
       ),
     );
   }
+}
+
+class _PasteMarkIntent extends Intent {
+  const _PasteMarkIntent(
+  );
+}
+
+class _SelectAllMarksIntent extends Intent {
+  const _SelectAllMarksIntent();
 }
