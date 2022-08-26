@@ -1,5 +1,5 @@
 name: flutter_shortcut_intent_action_talk
-description: A new Flutter project.
+description: Flutter Paint, an example of custom keyboard interactions in Flutter for Flutter Vikings 2022.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
