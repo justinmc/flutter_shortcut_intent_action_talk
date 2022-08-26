@@ -65,6 +65,9 @@ class _Swatch extends ConsumerWidget {
         ref.read(selectionsProvider.notifier).update(
           color: color,
         );
+        ref.read(selectionsProvider.notifier).update(
+          tool: Tool.rectangle,
+        );
       },
       child: const SizedBox.shrink(),
     );
