@@ -83,6 +83,9 @@ class _CanvasState extends ConsumerState<Canvas> {
     }
     // TODO(justinmc): Remove marks below some threshold size?
     setState(() {
+      ref.read(selectionsProvider.notifier).update(
+        tool: Tool.pointer,
+      );
       _nextPasteOffset = _creatingMark!.rect.topLeft + _kPasteOffset;
       _creatingMark = null;
       _createStartLocalFocalPoint = null;
@@ -126,7 +129,7 @@ class _CanvasState extends ConsumerState<Canvas> {
 
     final ToolSelections selections = ref.read(selectionsProvider);
 
-    if (selections.tool != Tool.selection) {
+    if (selections.tool != Tool.pointer) {
       return;
     }
 
@@ -240,7 +243,7 @@ class _CanvasState extends ConsumerState<Canvas> {
     final Set<Mark> marks = ref.watch(marksProvider);
     final ToolSelections selections = ref.watch(selectionsProvider);
 
-    final bool canTranslate = selections.tool == Tool.selection;
+    final bool canTranslate = selections.tool == Tool.pointer;
 
     return GestureDetector(
       onScaleStart: _onScaleStart,
