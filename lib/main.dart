@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'widgets/canvas.dart';
-import 'widgets/menu_bar.dart';
-import 'widgets/palette.dart';
-import 'widgets/toolbar.dart';
+import 'paint_page/paint_page.dart';
 
 void main() {
   runApp(
@@ -15,56 +12,75 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Paint',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({
+  const MyApp({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Validation Sandbox',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      initialRoute: '/',
+      routes: <String, Widget Function(BuildContext)>{
+        '/': (BuildContext context) => const MyHomePage(),
+        PaintPage.route: (BuildContext context) => const PaintPage(),
+      },
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          const MenuBar(),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const <Widget>[
-                Toolbar(),
-                Expanded(
-                  child: Canvas(),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            color: kUglyGrey,
-            height: 160.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const <Widget>[
-                Palette(),
-                Text('Text and stuff'),
-              ],
-            ),
+      appBar: AppBar(
+        title: const Text('ContextualMenu Demos'),
+      ),
+      body: ListView(
+        children: const <Widget>[
+          MyListItem(
+            route: PaintPage.route,
+            title: PaintPage.title,
+            subtitle: PaintPage.subtitle,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class MyListItem extends StatelessWidget {
+  const MyListItem({
+    Key? key,
+    required this.route,
+    required this.subtitle,
+    required this.title,
+  }) : super(key: key);
+
+  final String route;
+  final String subtitle;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed(route);
+      },
+      child: Card(
+        margin: const EdgeInsets.all(12.0),
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: ListTile(
+            title: Text(title),
+            subtitle: Text(subtitle),
+          ),
+        ),
       ),
     );
   }

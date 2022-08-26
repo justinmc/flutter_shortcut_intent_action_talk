@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shortcut_intent_action_talk/widgets/toolbar.dart';
+import 'toolbar.dart';
 
 import 'unimplemented_dialog.dart';
 
