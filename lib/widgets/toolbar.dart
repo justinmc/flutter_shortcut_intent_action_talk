@@ -14,7 +14,14 @@ class Toolbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: kUglyGrey,
+      decoration: const BoxDecoration(
+        color: kUglyGrey,
+        border: Border.symmetric(
+          horizontal: BorderSide(
+            color: Color(0xffaaa69e),
+          ),
+        ),
+      ),
       width: 100.0,
       child: GridView.count(
         primary: false,
