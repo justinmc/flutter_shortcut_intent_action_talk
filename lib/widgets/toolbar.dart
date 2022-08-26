@@ -32,10 +32,10 @@ class Toolbar extends StatelessWidget {
         crossAxisCount: 2,
         children: const <Widget>[
           ToolButton(
-            tool: Tool.selection,
+            tool: Tool.pointer,
           ),
           ToolButton(
-            tool: Tool.pencil,
+            tool: Tool.selection,
           ),
           ToolButton(
             tool: Tool.pencil,
@@ -97,6 +97,7 @@ class ToolButton extends ConsumerWidget {
   static const _kBorderColor = Color(0xff8296a6);
 
   static const Map<Tool, String> _toolToName = <Tool, String>{
+    Tool.pointer: 'tool_pointer.png',
     Tool.circle: 'tool_circle.png',
     Tool.pencil: 'tool_pencil.png',
     Tool.rectangle: 'tool_rectangle.png',

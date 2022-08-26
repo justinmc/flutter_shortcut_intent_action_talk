@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum Tool {
+  pointer,
   circle,
   pencil,
   rectangle,
@@ -12,6 +13,7 @@ enum Tool {
   static Set<Tool> get unimplemented => <Tool>{
     Tool.circle,
     Tool.pencil,
+    Tool.selection,
   };
 }
 

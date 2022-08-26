@@ -41,6 +41,7 @@ class _CanvasState extends ConsumerState<Canvas> {
     switch (selections.tool) {
       case Tool.circle:
       case Tool.pencil:
+      case Tool.pointer:
       case Tool.selection:
       case Tool.text:
         return;
@@ -96,6 +97,7 @@ class _CanvasState extends ConsumerState<Canvas> {
       case Tool.circle:
       case Tool.pencil:
       case Tool.selection:
+      case Tool.pointer:
       case Tool.rectangle:
         ref.read(marksProvider.notifier).unselectAll();
         return;
