@@ -5,6 +5,9 @@ import 'actions_page/actions_page.dart';
 import 'actions_page/actions_page_2.dart';
 import 'actions_page/actions_page_3.dart';
 import 'paint_page/paint_page.dart';
+import 'shortcuts_page/shortcuts_page.dart';
+import 'shortcuts_page/shortcuts_page_2.dart';
+import 'shortcuts_page/shortcuts_page_3.dart';
 
 void main() {
   runApp(
@@ -34,6 +37,9 @@ class MyApp extends StatelessWidget {
         ActionsPage.route: (BuildContext context) => const ActionsPage(),
         ActionsPageTwo.route: (BuildContext context) => const ActionsPageTwo(),
         ActionsPageThree.route: (BuildContext context) => const ActionsPageThree(),
+        ShortcutsPage.route: (BuildContext context) => const ShortcutsPage(),
+        ShortcutsPageTwo.route: (BuildContext context) => const ShortcutsPageTwo(),
+        ShortcutsPageThree.route: (BuildContext context) => ShortcutsPageThree(),
       },
     );
   }
@@ -54,6 +60,11 @@ class MyHomePage extends StatelessWidget {
             route: ActionsPage.route,
             title: ActionsPage.title,
             subtitle: ActionsPage.subtitle,
+          ),
+          MyListItem(
+            route: ShortcutsPage.route,
+            title: ShortcutsPage.title,
+            subtitle: ShortcutsPage.subtitle,
           ),
           MyListItem(
             route: PaintPage.route,
