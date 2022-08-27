@@ -60,16 +60,19 @@ class MyHomePage extends StatelessWidget {
             route: ActionsPage.route,
             title: ActionsPage.title,
             subtitle: ActionsPage.subtitle,
+            assetName: 'actions_screenshot.png',
           ),
           MyListItem(
             route: ShortcutsPage.route,
             title: ShortcutsPage.title,
             subtitle: ShortcutsPage.subtitle,
+            assetName: 'shortcuts_screenshot.png',
           ),
           MyListItem(
             route: PaintPage.route,
             title: PaintPage.title,
             subtitle: PaintPage.subtitle,
+            assetName: 'paint_screenshot.png',
           ),
         ],
       ),
@@ -83,11 +86,13 @@ class MyListItem extends StatelessWidget {
     required this.route,
     required this.subtitle,
     required this.title,
+    required this.assetName,
   }) : super(key: key);
 
   final String route;
   final String subtitle;
   final String title;
+  final String assetName;
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +107,7 @@ class MyListItem extends StatelessWidget {
           child: ListTile(
             title: Text(title),
             subtitle: Text(subtitle),
+            trailing: Image.asset(assetName),
           ),
         ),
       ),
