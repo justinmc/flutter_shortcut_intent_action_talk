@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import 'data/version.dart';
 import 'widgets/canvas.dart';
 import 'widgets/menu_bar.dart';
 import 'widgets/palette.dart';
@@ -19,6 +22,19 @@ class PaintPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Flutter Paint'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const _VersionSelector();
+                },
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -49,6 +65,80 @@ class PaintPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _VersionSelector extends ConsumerWidget {
+  const _VersionSelector();
+
+  static const Map<Version, String> _versionTitles = <Version, String>{
+    Version.noKeyboard: 'No keyboard functionality',
+    Version.basicKeyboard: 'Basic keyboard functionality',
+    Version.finished: 'The final, fully featured app',
+  };
+
+  // TODO(justinmc): Get these Uris right when you put this code into separate files.
+  static const Map<Version, String> _versionCanvasUris = <Version, String>{
+    Version.noKeyboard: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/canvas.dart',
+    Version.basicKeyboard: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/canvas.dart',
+    Version.finished: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/canvas.dart',
+  };
+
+  static const Map<Version, String> _versionMarkUris = <Version, String>{
+    Version.noKeyboard: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/mark.dart',
+    Version.basicKeyboard: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/mark.dart',
+    Version.finished: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/mark.dart',
+  };
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final Version selectedVersion = ref.watch(versionProvider);
+
+    return SimpleDialog(
+      title: const Text('App versions'),
+      children: Version.values.map((Version version) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              TextButton(
+                onPressed: () {
+                  ref.read(versionProvider.notifier).update(version);
+                },
+                child: Row(
+                  children: <Widget>[
+                    Icon(version == selectedVersion ? Icons.check_box_outlined : Icons.check_box_outline_blank),
+                    Text(_versionTitles[version]!),
+                  ],
+                ),
+              ),
+              const Spacer(flex: 2),
+                  IconButton(
+                    icon: const Icon(Icons.code),
+                    tooltip: 'canvas.dart',
+                    onPressed: () async {
+                      final Uri url = Uri.parse(_versionCanvasUris[version]!);
+                      if (!await launchUrl(url)) {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.code),
+                    tooltip: 'mark.dart',
+                    onPressed: () async{
+                      final Uri url = Uri.parse(_versionMarkUris[version]!);
+                      if (!await launchUrl(url)) {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                  ),
+            ],
+          ),
+        );
+      }).toList(),
     );
   }
 }
