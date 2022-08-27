@@ -65,6 +65,8 @@ class _MarkWidgetState extends State<MarkWidget> {
         onScaleStart: widget.onScaleStart,
         onScaleUpdate: widget.onScaleUpdate,
         onScaleEnd: widget.onScaleEnd,
+        // TODO: Use Shortcuts to listen to keyboard events and dispatch Intents
+        // up to the canvas.
         child: DottedBorder(
           color: widget.mark.selected ? Colors.black : Colors.transparent,
           dashPattern: const <double>[6, 3],

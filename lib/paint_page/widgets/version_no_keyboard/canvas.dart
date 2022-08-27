@@ -181,6 +181,7 @@ class _CanvasState extends ConsumerState<Canvas> {
       onScaleEnd: _onScaleEnd,
       onTapUp: _onTapUpCanvas,
       onTapDown: _onTapDownCanvas,
+      // TODO: Receive Intents with an Actions widget and update the canvas.
       child: Focus(
         focusNode: _focusNode,
         child: Container(
