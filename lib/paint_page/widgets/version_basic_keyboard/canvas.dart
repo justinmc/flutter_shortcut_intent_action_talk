@@ -172,11 +172,10 @@ class _CanvasState extends ConsumerState<Canvas> {
   }
 
   void _onMarkChangeFocus(Mark mark, FocusNode focusNode) {
-    /*
-    if (focusNode.hasFocus && !mark.selected) {
+    final Set<Mark> marks = ref.watch(marksProvider);
+    if (focusNode.hasFocus && !mark.selected && marks.contains(mark)) {
       ref.read(marksProvider.notifier).selectOnly(mark);
     }
-    */
   }
 
   // NEW: Handlers for Actions.

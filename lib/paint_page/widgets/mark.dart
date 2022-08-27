@@ -206,23 +206,21 @@ class _TextMarkState extends State<_TextMark> {
       color: Colors.white,
       width: widget.mark.rect.width,
       height: widget.mark.rect.height,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Shortcuts(
-          shortcuts: <SingleActivator, Intent>{
-            if (controller.text.isEmpty)
-              const SingleActivator(LogicalKeyboardKey.backspace): const DeleteSelectedMarkIntent(),
-            if (controller.text.isNotEmpty)
-              const SingleActivator(LogicalKeyboardKey.backspace): const DeleteCharacterIntent(forward: false),
-            const SingleActivator(LogicalKeyboardKey.keyA, meta: true): const SelectAllTextIntent(SelectionChangedCause.keyboard),
-          },
-          child: TextField(
-            controller: controller,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-            ),
-            focusNode: widget.focusNode,
+      padding: const EdgeInsets.all(10.0),
+      child: Shortcuts(
+        shortcuts: <SingleActivator, Intent>{
+          if (controller.text.isEmpty)
+            const SingleActivator(LogicalKeyboardKey.backspace): const DeleteSelectedMarkIntent(),
+          if (controller.text.isNotEmpty)
+            const SingleActivator(LogicalKeyboardKey.backspace): const DeleteCharacterIntent(forward: false),
+          const SingleActivator(LogicalKeyboardKey.keyA, meta: true): const SelectAllTextIntent(SelectionChangedCause.keyboard),
+        },
+        child: TextField(
+          controller: controller,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
           ),
+          focusNode: widget.focusNode,
         ),
       ),
     );

@@ -209,15 +209,13 @@ class _TextMarkState extends State<_TextMark> {
       color: Colors.white,
       width: widget.mark.rect.width,
       height: widget.mark.rect.height,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: TextField(
-          controller: controller,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          focusNode: widget.focusNode,
+      padding: const EdgeInsets.all(10.0),
+      child: TextField(
+        controller: controller,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
         ),
+        focusNode: widget.focusNode,
       ),
     );
   }

@@ -28,7 +28,7 @@ class MarkWidget extends StatefulWidget {
 }
 
 class _MarkWidgetState extends State<MarkWidget> {
-  final FocusNode _focusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode()..requestFocus();
 
   void _onChangeFocus() {
     if (widget.mark.selected != _focusNode.hasFocus) {
@@ -168,15 +168,13 @@ class _TextMarkState extends State<_TextMark> {
       color: Colors.white,
       width: widget.mark.rect.width,
       height: widget.mark.rect.height,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: TextField(
-          controller: controller,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          focusNode: widget.focusNode,
+      padding: const EdgeInsets.all(10.0),
+      child: TextField(
+        controller: controller,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
         ),
+        focusNode: widget.focusNode,
       ),
     );
   }
