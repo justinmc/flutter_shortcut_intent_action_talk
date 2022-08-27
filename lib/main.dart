@@ -63,7 +63,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ContextualMenu Demos'),
+        title: const Text('Custom User Interactions Talk'),
       ),
       body: ListView(
         children: const <Widget>[
