@@ -30,7 +30,7 @@ class MarkWidget extends StatefulWidget {
 }
 
 class _MarkWidgetState extends State<MarkWidget> {
-  final FocusNode _focusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode()..requestFocus();
 
   void _onChangeFocus() {
     if (widget.mark.selected != _focusNode.hasFocus) {
