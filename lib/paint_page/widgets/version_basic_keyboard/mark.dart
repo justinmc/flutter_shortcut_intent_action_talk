@@ -30,7 +30,7 @@ class MarkWidget extends StatefulWidget {
 }
 
 class _MarkWidgetState extends State<MarkWidget> {
-  final FocusNode _focusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode()..requestFocus();
 
   void _onChangeFocus() {
     if (widget.mark.selected != _focusNode.hasFocus) {
@@ -44,17 +44,20 @@ class _MarkWidgetState extends State<MarkWidget> {
     widget.onTapDown(details);
   }
 
+  // NEW: Shortcuts mappings per-platform.
   Map<SingleActivator, Intent> get _commonShortcuts => <SingleActivator, Intent>{
     const SingleActivator(LogicalKeyboardKey.backspace): const DeleteSelectedMarkIntent(),
   };
 
   Map<SingleActivator, Intent> get _appleShortcuts => <SingleActivator, Intent>{
     const SingleActivator(LogicalKeyboardKey.keyC, meta: true): CopyMarkIntent(widget.mark),
+    const SingleActivator(LogicalKeyboardKey.keyV, meta: true): const PasteMarkIntent(),
     const SingleActivator(LogicalKeyboardKey.keyX, meta: true): CutMarkIntent(widget.mark),
   };
 
   Map<SingleActivator, Intent> get _nonAppleShortcuts => <SingleActivator, Intent>{
     const SingleActivator(LogicalKeyboardKey.keyC, control: true): CopyMarkIntent(widget.mark),
+    const SingleActivator(LogicalKeyboardKey.keyV, control: true): const PasteMarkIntent(),
     const SingleActivator(LogicalKeyboardKey.keyX, control: true): CutMarkIntent(widget.mark),
   };
 
@@ -101,6 +104,7 @@ class _MarkWidgetState extends State<MarkWidget> {
         onScaleStart: widget.onScaleStart,
         onScaleUpdate: widget.onScaleUpdate,
         onScaleEnd: widget.onScaleEnd,
+        // NEW: Shortcuts widget to receive key events on Marks.
         child: Shortcuts(
           shortcuts: _adaptiveShortcuts,
           child: DottedBorder(

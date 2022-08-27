@@ -81,7 +81,6 @@ class _CanvasState extends ConsumerState<Canvas> {
     if (_creatingMark == null || _createStartLocalFocalPoint == null) {
       return;
     }
-    // TODO(justinmc): Remove marks below some threshold size?
     setState(() {
       ref.read(selectionsProvider.notifier).update(
         tool: Tool.pointer,
@@ -120,7 +119,6 @@ class _CanvasState extends ConsumerState<Canvas> {
   }
 
   void _onTapDownCanvas(TapDownDetails details) {
-    // TODO(justinmc): This is sometimes called after tapping a Mark.
     ref.read(marksProvider.notifier).unselectAll();
   }
 
@@ -167,7 +165,6 @@ class _CanvasState extends ConsumerState<Canvas> {
   }
 
   void _onTapDownMark(Mark mark) {
-    // TODO(justinmc): Should tap to select only work for certain tools?
     setState(() {
       ref.read(marksProvider.notifier).selectOnly(mark);
       _nextPasteOffset = mark.rect.topLeft + _kPasteOffset;
@@ -254,7 +251,6 @@ class _CanvasState extends ConsumerState<Canvas> {
             color: Colors.white,
             child: Stack(
               children: <Widget>[
-                // TODO(justinmc): Sort by created or interacted timestamp.
                 ...marks.map((Mark mark) => MarkWidget(
                   key: ValueKey(mark.id),
                   mark: mark,
