@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_shortcut_intent_action_talk/quiz_page/quiz_page_actions_nested_empty.dart';
 
 import 'actions_page/actions_page.dart';
 import 'actions_page/actions_page_2.dart';
@@ -9,6 +8,10 @@ import 'my_list_item.dart';
 import 'paint_page/paint_page.dart';
 import 'quiz_page/quiz_page.dart';
 import 'quiz_page/quiz_page_actions_nested.dart';
+import 'quiz_page/quiz_page_actions_nested_empty.dart';
+import 'quiz_page/quiz_page_shortcuts_nested.dart';
+import 'quiz_page/quiz_page_shortcuts_sandwiched.dart';
+import 'quiz_page/quiz_page_text_field.dart';
 import 'shortcuts_page/shortcuts_page.dart';
 import 'shortcuts_page/shortcuts_page_2.dart';
 import 'shortcuts_page/shortcuts_page_3.dart';
@@ -46,6 +49,9 @@ class MyApp extends StatelessWidget {
         QuizPage.route: (BuildContext context) => const QuizPage(),
         QuizActionsNestedPage.route: (BuildContext context) => const QuizActionsNestedPage(),
         QuizActionsNestedEmptyPage.route: (BuildContext context) => const QuizActionsNestedEmptyPage(),
+        QuizShortcutsNestedPage.route: (BuildContext context) => QuizShortcutsNestedPage(),
+        QuizShortcutsSandwichedPage.route: (BuildContext context) => QuizShortcutsSandwichedPage(),
+        QuizTextFieldPage.route: (BuildContext context) => const QuizTextFieldPage(),
         ShortcutsPage.route: (BuildContext context) => const ShortcutsPage(),
         ShortcutsPageTwo.route: (BuildContext context) => const ShortcutsPageTwo(),
         ShortcutsPageThree.route: (BuildContext context) => ShortcutsPageThree(),

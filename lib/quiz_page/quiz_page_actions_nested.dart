@@ -14,7 +14,7 @@ class QuizActionsNestedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DemoPage(
-      title: 'Actions - Nested',
+      title: 'Quiz - Actions Nested',
       codeUri: Uri.parse('https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/quiz_page/quiz_page_actions_nested.dart'),
       child: Center(
         child: Actions(

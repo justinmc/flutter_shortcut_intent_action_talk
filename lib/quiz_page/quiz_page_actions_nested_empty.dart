@@ -8,13 +8,13 @@ class QuizActionsNestedEmptyPage extends StatelessWidget {
   });
 
   static const String route = 'quiz-actions-nested-empty';
-  static const String title = 'Actions - Nested Empty';
+  static const String title = 'Actions - Nested with Empty';
   static const String subtitle = 'Two nested Actions widgets, only one of which maps the invoked Intent.';
 
   @override
   Widget build(BuildContext context) {
     return DemoPage(
-      title: 'Actions - Nested Empty',
+      title: 'Quiz - Actions Nested with Empty',
       codeUri: Uri.parse('https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/quiz_page/quiz_page_actions_nested_empty.dart'),
       child: Center(
         child: Actions(
