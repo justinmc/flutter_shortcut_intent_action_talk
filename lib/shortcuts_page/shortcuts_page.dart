@@ -15,7 +15,7 @@ class ShortcutsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DemoPage(
-      title: 'Shortcuts Example',
+      title: 'Shortcuts Example - 1 of 3',
       codeUri: Uri.parse('https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/shortcuts_page/shortcuts_page.dart'),
       nextRoute: ShortcutsPageTwo.route,
       child: const Center(

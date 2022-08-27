@@ -65,6 +65,7 @@ flutter:
     - actions_screenshot.png
     - paint_screenshot.png
     - shortcuts_screenshot.png
+    - text_field_screenshot.png
     - tool_pointer.png
     - tool_circle.png
     - tool_pencil.png

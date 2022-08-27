@@ -15,7 +15,7 @@ class ActionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DemoPage(
-      title: 'Actions Example',
+      title: 'Actions Example - 1 of 3',
       codeUri: Uri.parse('https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/actions_page/actions_page.dart'),
       nextRoute: ActionsPageTwo.route,
       child: Center(

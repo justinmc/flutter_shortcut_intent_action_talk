@@ -8,6 +8,8 @@ import 'paint_page/paint_page.dart';
 import 'shortcuts_page/shortcuts_page.dart';
 import 'shortcuts_page/shortcuts_page_2.dart';
 import 'shortcuts_page/shortcuts_page_3.dart';
+import 'text_field_page/text_field_page.dart';
+import 'text_field_page/text_field_page_2.dart';
 
 void main() {
   runApp(
@@ -40,6 +42,8 @@ class MyApp extends StatelessWidget {
         ShortcutsPage.route: (BuildContext context) => const ShortcutsPage(),
         ShortcutsPageTwo.route: (BuildContext context) => const ShortcutsPageTwo(),
         ShortcutsPageThree.route: (BuildContext context) => ShortcutsPageThree(),
+        TextFieldPage.route: (BuildContext context) => TextFieldPage(),
+        TextFieldPageTwo.route: (BuildContext context) => TextFieldPageTwo(),
       },
     );
   }
@@ -67,6 +71,12 @@ class MyHomePage extends StatelessWidget {
             title: ShortcutsPage.title,
             subtitle: ShortcutsPage.subtitle,
             assetName: 'shortcuts_screenshot.png',
+          ),
+          MyListItem(
+            route: TextFieldPage.route,
+            title: TextFieldPage.title,
+            subtitle: TextFieldPage.subtitle,
+            assetName: 'text_field_screenshot.png',
           ),
           MyListItem(
             route: PaintPage.route,
