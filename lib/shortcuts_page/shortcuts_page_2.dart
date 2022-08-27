@@ -15,6 +15,7 @@ class ShortcutsPageTwo extends StatelessWidget {
   Widget build(BuildContext context) {
     return DemoPage(
       title: 'Shortcuts Example - 2 of 3',
+      codeUri: Uri.parse('https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/shortcuts_page/shortcuts_page_2.dart'),
       nextRoute: ShortcutsPageThree.route,
       child: Center(
         // NEW: An Actions widget to recieve _BackspaceIntent.
@@ -23,7 +24,7 @@ class ShortcutsPageTwo extends StatelessWidget {
             _BackspaceIntent: CallbackAction<_BackspaceIntent>(
               onInvoke: (_BackspaceIntent intent) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('Invoked _BackspaceIntent'),
+                  content: Text('Invoked _BackspaceIntent'),
                 ));
                 return;
               },

@@ -13,13 +13,14 @@ class ActionsPageThree extends StatelessWidget {
   Widget build(BuildContext context) {
     return DemoPage(
       title: 'Actions Example - 3 of 3',
+      codeUri: Uri.parse('https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/actions_page/actions_page_3.dart'),
       child: Center(
         child: Actions(
           actions: <Type, Action<Intent>>{
             _PushButtonIntent: CallbackAction<_PushButtonIntent>(
               onInvoke: (_PushButtonIntent intent) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('Invoked _PushButtonIntent'),
+                  content: Text('Invoked _PushButtonIntent'),
                 ));
                 return;
               },
@@ -43,7 +44,6 @@ class ActionsPageThree extends StatelessWidget {
   }
 }
 
-// NEW: An Intent to invoke.
 class _PushButtonIntent extends Intent {
   const _PushButtonIntent();
 }

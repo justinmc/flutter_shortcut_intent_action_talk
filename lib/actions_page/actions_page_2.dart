@@ -14,6 +14,7 @@ class ActionsPageTwo extends StatelessWidget {
   Widget build(BuildContext context) {
     return DemoPage(
       title: 'Actions Example - 2 of 3',
+      codeUri: Uri.parse('https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/actions_page/actions_page_2.dart'),
       nextRoute: ActionsPageThree.route,
       child: Center(
         // NEW: Actions widget to listen for _PushButtonIntent.
@@ -22,7 +23,7 @@ class ActionsPageTwo extends StatelessWidget {
             _PushButtonIntent: CallbackAction<_PushButtonIntent>(
               onInvoke: (_PushButtonIntent intent) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('Invoked _PushButtonIntent'),
+                  content: Text('Invoked _PushButtonIntent'),
                 ));
                 return;
               },
