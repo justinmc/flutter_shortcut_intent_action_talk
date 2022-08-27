@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'quiz_page_actions_nested.dart';
+import 'quiz_page_actions_nested_empty.dart';
 import '../my_list_item.dart';
 
 class QuizPage extends StatelessWidget {
@@ -24,6 +25,11 @@ class QuizPage extends StatelessWidget {
             route: QuizActionsNestedPage.route,
             title: QuizActionsNestedPage.title,
             subtitle: QuizActionsNestedPage.subtitle,
+          ),
+          MyListItem(
+            route: QuizActionsNestedEmptyPage.route,
+            title: QuizActionsNestedEmptyPage.title,
+            subtitle: QuizActionsNestedEmptyPage.subtitle,
           ),
         ],
       ),

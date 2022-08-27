@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_shortcut_intent_action_talk/quiz_page/quiz_page_actions_nested_empty.dart';
 
 import 'actions_page/actions_page.dart';
 import 'actions_page/actions_page_2.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         PaintPage.route: (BuildContext context) => const PaintPage(),
         QuizPage.route: (BuildContext context) => const QuizPage(),
         QuizActionsNestedPage.route: (BuildContext context) => const QuizActionsNestedPage(),
+        QuizActionsNestedEmptyPage.route: (BuildContext context) => const QuizActionsNestedEmptyPage(),
         ShortcutsPage.route: (BuildContext context) => const ShortcutsPage(),
         ShortcutsPageTwo.route: (BuildContext context) => const ShortcutsPageTwo(),
         ShortcutsPageThree.route: (BuildContext context) => ShortcutsPageThree(),
