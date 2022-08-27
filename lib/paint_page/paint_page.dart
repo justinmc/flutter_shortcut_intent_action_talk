@@ -93,16 +93,15 @@ class _VersionSelector extends ConsumerWidget {
     Version.finished: 'The final, fully featured app',
   };
 
-  // TODO(justinmc): Get these Uris right when you put this code into separate files.
   static const Map<Version, String> _versionCanvasUris = <Version, String>{
-    Version.noKeyboard: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/canvas.dart',
-    Version.basicKeyboard: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/canvas.dart',
+    Version.noKeyboard: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/version_no_keyboard/canvas.dart',
+    Version.basicKeyboard: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/version_basic_keyboard/canvas.dart',
     Version.finished: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/canvas.dart',
   };
 
   static const Map<Version, String> _versionMarkUris = <Version, String>{
-    Version.noKeyboard: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/mark.dart',
-    Version.basicKeyboard: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/mark.dart',
+    Version.noKeyboard: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/version_no_keyboard/mark.dart',
+    Version.basicKeyboard: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/version_basic_keyboard/mark.dart',
     Version.finished: 'https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/paint_page/widgets/mark.dart',
   };
 

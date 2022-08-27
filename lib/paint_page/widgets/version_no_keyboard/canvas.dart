@@ -109,7 +109,6 @@ class _CanvasState extends ConsumerState<Canvas> {
   }
 
   void _onTapDownCanvas(TapDownDetails details) {
-    // TODO(justinmc): This is sometimes called after tapping a Mark.
     ref.read(marksProvider.notifier).unselectAll();
   }
 
@@ -188,7 +187,6 @@ class _CanvasState extends ConsumerState<Canvas> {
           color: Colors.white,
           child: Stack(
             children: <Widget>[
-              // TODO(justinmc): Sort by created or interacted timestamp.
               ...marks.map((Mark mark) => MarkWidget(
                 key: ValueKey(mark.id),
                 mark: mark,

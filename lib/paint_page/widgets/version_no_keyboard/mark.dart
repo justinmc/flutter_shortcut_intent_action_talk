@@ -34,7 +34,6 @@ class _MarkWidgetState extends State<MarkWidget> {
     if (widget.mark.selected != _focusNode.hasFocus) {
       widget.onChangeFocus(_focusNode);
     }
-    //setState(() {});
   }
 
   void _onTapDown(TapDownDetails details) {
