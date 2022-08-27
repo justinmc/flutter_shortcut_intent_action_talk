@@ -4,11 +4,13 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'data/version.dart';
 import 'widgets/canvas.dart';
+import 'widgets/version_no_keyboard/canvas.dart' as canvas_no_keyboard;
+import 'widgets/version_basic_keyboard/canvas.dart' as canvas_basic_keyboard;
 import 'widgets/menu_bar.dart';
 import 'widgets/palette.dart';
 import 'widgets/toolbar.dart';
 
-class PaintPage extends StatelessWidget {
+class PaintPage extends ConsumerWidget {
   const PaintPage({
     super.key,
   });
@@ -17,8 +19,21 @@ class PaintPage extends StatelessWidget {
   static const String title = 'Flutter Paint Demo';
   static const String subtitle = 'A simple drawing app with keyboard shortcuts.';
 
+  static Widget _canvasForVersion(Version version) {
+    switch (version) {
+      case (Version.noKeyboard):
+        return const canvas_no_keyboard.Canvas();
+      case (Version.basicKeyboard):
+        return const canvas_basic_keyboard.Canvas();
+      case (Version.finished):
+        return const Canvas();
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final Version version = ref.watch(versionProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Flutter Paint'),
@@ -43,10 +58,10 @@ class PaintPage extends StatelessWidget {
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: const <Widget>[
-                Toolbar(),
+              children: <Widget>[
+                const Toolbar(),
                 Expanded(
-                  child: Canvas(),
+                  child: _canvasForVersion(version),
                 ),
               ],
             ),
