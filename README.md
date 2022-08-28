@@ -1,6 +1,8 @@
 # Custom User Interactions - Flutter Vikings 2022
 
-A live demo for the Flutter Vikings 2022 talk - Custom User Interactions with Shortcuts, Intents, and Actions ([slides](https://docs.google.com/presentation/d/1hUsKF8Vly72-Phcn7L9ikjJlFYFLUirNt1oGWu_BBSU/edit#slide=id.g147a725c12b_0_20)).
+A companion app for the Flutter Vikings 2022 talk - Custom User Interactions with Shortcuts, Intents, and Actions ([slides](https://docs.google.com/presentation/d/1hUsKF8Vly72-Phcn7L9ikjJlFYFLUirNt1oGWu_BBSU/edit#slide=id.g147a725c12b_0_20)). Contains live examples of all of the demos and quiz questions in the talk.
+
+Run it live on the web at [justinmc.github.io/flutter_shortcut_intent_action_talk/](https://justinmc.github.io/flutter_shortcut_intent_action_talk/).  Most demos require a physical keyboard.
 
 ## Main demo: [Flutter Paint](https://github.com/justinmc/flutter_shortcut_intent_action_talk/tree/main/lib/paint_page)
 
