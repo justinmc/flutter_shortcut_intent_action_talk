@@ -27,7 +27,7 @@ To publish to GitHub Pages, do the following:
 
   1. `git checkout pages`
   1. `flutter build web`
-  1. Edit build/web/index.html and change the `base` `href` to `"flutter_shortcut_intent_action_talk/".
+  1. Edit build/web/index.html and change the `base` `href` to `"/flutter_shortcut_intent_action_talk/".
   1. `cp -r build/web/ docs/`
   1. `git commit -am "Update GitHub Pages"`
   1. `git push`
