@@ -21,3 +21,13 @@ Use the dropdown in the AppBar to switch between code versions mentioned in the 
   1. [Shortcuts nested](https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/quiz_page/quiz_page_shortcuts_nested.dart)
   1. [Actions above and below Shortcuts](https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/quiz_page/quiz_page_shortcuts_sandwiched.dart)
   1. [TextField override](https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/quiz_page/quiz_page_text_field.dart)
+
+### Repository maintenance
+To publish to GitHub Pages, do the following:
+
+  1. `git checkout pages`
+  1. `flutter build web`
+  1. Edit build/web/index.html and change the `base` `href` to `"/flutter_shortcut_intent_action_talk".
+  1. `cp -r build/web/ docs/`
+  1. `git commit -am "Update GitHub Pages"`
+  1. `git push`
