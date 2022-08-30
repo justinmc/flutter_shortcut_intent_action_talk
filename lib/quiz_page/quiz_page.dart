@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'quiz_page_actions_nested.dart';
 import 'quiz_page_actions_nested_empty.dart';
+import 'quiz_page_actions_overridable.dart';
 import 'quiz_page_shortcuts_nested.dart';
 import 'quiz_page_shortcuts_sandwiched.dart';
 import 'quiz_page_text_field.dart';
@@ -49,9 +50,13 @@ class QuizPage extends StatelessWidget {
             title: QuizTextFieldPage.title,
             subtitle: QuizTextFieldPage.subtitle,
           ),
+          MyListItem(
+            route: QuizActionsOverridablePage.route,
+            title: QuizActionsOverridablePage.title,
+            subtitle: QuizActionsOverridablePage.subtitle,
+          ),
         ],
       ),
     );
   }
 }
-

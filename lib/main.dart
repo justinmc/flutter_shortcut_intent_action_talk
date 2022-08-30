@@ -11,6 +11,7 @@ import 'paint_page/paint_page.dart';
 import 'quiz_page/quiz_page.dart';
 import 'quiz_page/quiz_page_actions_nested.dart';
 import 'quiz_page/quiz_page_actions_nested_empty.dart';
+import 'quiz_page/quiz_page_actions_overridable.dart';
 import 'quiz_page/quiz_page_shortcuts_nested.dart';
 import 'quiz_page/quiz_page_shortcuts_sandwiched.dart';
 import 'quiz_page/quiz_page_text_field.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         QuizShortcutsNestedPage.route: (BuildContext context) => QuizShortcutsNestedPage(),
         QuizShortcutsSandwichedPage.route: (BuildContext context) => QuizShortcutsSandwichedPage(),
         QuizTextFieldPage.route: (BuildContext context) => const QuizTextFieldPage(),
+        QuizActionsOverridablePage.route: (BuildContext context) => const QuizActionsOverridablePage(),
         ShortcutsPage.route: (BuildContext context) => const ShortcutsPage(),
         ShortcutsPageTwo.route: (BuildContext context) => const ShortcutsPageTwo(),
         ShortcutsPageThree.route: (BuildContext context) => ShortcutsPageThree(),
