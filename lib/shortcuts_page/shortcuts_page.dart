@@ -19,8 +19,7 @@ class ShortcutsPage extends StatelessWidget {
       codeUri: Uri.parse('https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/shortcuts_page/shortcuts_page.dart'),
       nextRoute: ShortcutsPageTwo.route,
       child: const Center(
-        // TODO: Add a Shortcuts widget here to receive keys from the button
-        // below when it's focused.
+        // TODO: Add a Shortcuts widget here to receive the backspace key.
         child: Text('Press backspace'),
       ),
     );

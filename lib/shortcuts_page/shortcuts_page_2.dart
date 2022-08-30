@@ -30,8 +30,7 @@ class ShortcutsPageTwo extends StatelessWidget {
               },
             ),
           },
-          // NEW: An Shortcuts widget to receive keyboard shortcuts when the
-          // button below is focused.
+          // NEW: An Shortcuts widget to receive the backspace key.
           child: const Shortcuts(
             shortcuts: <ShortcutActivator, Intent>{
               SingleActivator(LogicalKeyboardKey.backspace): _BackspaceIntent(),
