@@ -8,7 +8,7 @@ class QuizActionsOverridablePage extends StatelessWidget {
   });
 
   static const String route = 'quiz-actions-overridable';
-  static const String title = 'Advanced - Overridable Actions';
+  static const String title = 'Overridable Actions';
   static const String subtitle = 'A demonstration of Actions.overridable.';
 
   @override
