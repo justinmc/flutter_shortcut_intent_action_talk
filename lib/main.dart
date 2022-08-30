@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'actions_page/actions_page.dart';
 import 'actions_page/actions_page_2.dart';
@@ -70,6 +72,17 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Custom User Interactions Talk'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.code),
+            onPressed: () async {
+              final Uri uri = Uri.parse('https://github.com/justinmc/flutter_shortcut_intent_action_talk');
+              if (!await launchUrl(uri)) {
+                throw 'Could not launch $uri';
+              }
+            },
+          ),
+        ],
       ),
       body: ListView(
         children: const <Widget>[
