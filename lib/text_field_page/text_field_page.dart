@@ -9,7 +9,7 @@ class TextFieldPage extends StatelessWidget {
   });
 
   static const String route = 'text_field';
-  static const String title = 'Flutter TextField Demo';
+  static const String title = 'TextField Demo';
   static const String subtitle = "An example of modifying TextField's built-in keyboard behavior.";
 
   final TextEditingController controller = TextEditingController(

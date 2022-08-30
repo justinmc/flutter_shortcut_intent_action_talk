@@ -9,7 +9,7 @@ class ShortcutsPage extends StatelessWidget {
   });
 
   static const String route = 'shortcuts';
-  static const String title = 'Flutter Shortcuts Demo';
+  static const String title = 'Shortcuts Demo';
   static const String subtitle = 'An example of both Shortcuts and Actions.';
 
   @override
