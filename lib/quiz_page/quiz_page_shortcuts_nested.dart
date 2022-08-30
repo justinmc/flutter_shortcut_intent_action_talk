@@ -39,10 +39,16 @@ class QuizShortcutsNestedPage extends StatelessWidget {
               shortcuts: const <ShortcutActivator, Intent>{
                 SingleActivator(LogicalKeyboardKey.backspace): DoNothingIntent(),
               },
-              child: TextButton(
-                focusNode: _focusNode,
-                onPressed: () => _focusNode.requestFocus(),
-                child: const Text('Tap me, then press backspace'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text('Will the Actions receive MyBackspaceIntent?'),
+                  TextButton(
+                    focusNode: _focusNode,
+                    onPressed: () => _focusNode.requestFocus(),
+                    child: const Text('Tap me, then press backspace'),
+                  ),
+                ],
               ),
             ),
           ),

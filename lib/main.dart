@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         QuizActionsNestedEmptyPage.route: (BuildContext context) => const QuizActionsNestedEmptyPage(),
         QuizShortcutsNestedPage.route: (BuildContext context) => QuizShortcutsNestedPage(),
         QuizShortcutsSandwichedPage.route: (BuildContext context) => QuizShortcutsSandwichedPage(),
-        QuizTextFieldPage.route: (BuildContext context) => const QuizTextFieldPage(),
+        QuizTextFieldPage.route: (BuildContext context) => QuizTextFieldPage(),
         QuizActionsOverridablePage.route: (BuildContext context) => const QuizActionsOverridablePage(),
         ShortcutsPage.route: (BuildContext context) => const ShortcutsPage(),
         ShortcutsPageTwo.route: (BuildContext context) => const ShortcutsPageTwo(),

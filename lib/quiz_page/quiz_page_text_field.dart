@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import '../demo_page.dart';
 
 class QuizTextFieldPage extends StatelessWidget {
-  const QuizTextFieldPage({
+  QuizTextFieldPage({
     super.key,
   });
 
   static const String route = 'quiz-text-field';
   static const String title = 'TextField override';
   static const String subtitle = 'A TextField wrapped by an Actions widget attempting to override a built-in Intent.';
+
+  final TextEditingController controller = TextEditingController(
+    text: 'Focus me and then press ctrl-A or cmd-A',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,15 @@ class QuizTextFieldPage extends StatelessWidget {
               },
             ),
           },
-          child: const TextField(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text('Will the text be selected or will the Actions receive the Intent?'),
+              TextField(
+                controller: controller,
+              ),
+            ],
+          ),
         ),
       ),
     );

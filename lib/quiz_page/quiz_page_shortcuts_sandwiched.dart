@@ -46,10 +46,16 @@ class QuizShortcutsSandwichedPage extends StatelessWidget {
                   },
                 ),
               },
-              child: TextButton(
-                focusNode: _focusNode,
-                onPressed: () => _focusNode.requestFocus(),
-                child: const Text('Tap me, then press backspace'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text('Will the higher or lower Actions receive MyBackspaceIntent?'),
+                  TextButton(
+                    focusNode: _focusNode,
+                    onPressed: () => _focusNode.requestFocus(),
+                    child: const Text('Tap me, then press backspace'),
+                  ),
+                ],
               ),
             ),
           ),
