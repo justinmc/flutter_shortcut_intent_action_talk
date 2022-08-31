@@ -25,7 +25,7 @@ class QuizShortcutsNestedPage extends StatelessWidget {
             MyBackspaceIntent: CallbackAction<MyBackspaceIntent>(
               onInvoke: (MyBackspaceIntent intent) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Invoked MyBackspaceIntent action.'),
+                  content: Text('Invoked MyBackspaceIntent action.', style: TextStyle(fontSize: 32.0)),
                 ));
                 return;
               },

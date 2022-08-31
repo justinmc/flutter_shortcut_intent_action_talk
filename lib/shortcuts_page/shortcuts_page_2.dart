@@ -24,7 +24,7 @@ class ShortcutsPageTwo extends StatelessWidget {
             _BackspaceIntent: CallbackAction<_BackspaceIntent>(
               onInvoke: (_BackspaceIntent intent) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Invoked _BackspaceIntent'),
+                  content: Text('Invoked _BackspaceIntent', style: TextStyle(fontSize: 32.0)),
                 ));
                 return;
               },

@@ -22,7 +22,7 @@ class QuizActionsOverridablePage extends StatelessWidget {
             _PushButtonIntent: Action<_PushButtonIntent>.overridable(context: context, defaultAction: CallbackAction<_PushButtonIntent>(
               onInvoke: (_PushButtonIntent intent) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Invoked higher overridable _PushButtonIntent'),
+                  content: Text('Invoked higher overridable _PushButtonIntent', style: TextStyle(fontSize: 32.0)),
                 ));
                 return;
               },
@@ -35,7 +35,7 @@ class QuizActionsOverridablePage extends StatelessWidget {
                   _PushButtonIntent: Action<_PushButtonIntent>.overridable(context: context, defaultAction: CallbackAction<_PushButtonIntent>(
                     onInvoke: (_PushButtonIntent intent) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Invoked lower overridable _PushButtonIntent'),
+                        content: Text('Invoked lower overridable _PushButtonIntent', style: TextStyle(fontSize: 32.0)),
                       ));
                       return;
                     },

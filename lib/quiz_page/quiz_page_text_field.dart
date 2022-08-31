@@ -26,7 +26,7 @@ class QuizTextFieldPage extends StatelessWidget {
             SelectAllTextIntent: CallbackAction<SelectAllTextIntent>(
               onInvoke: (SelectAllTextIntent intent) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Invoked SelectAllTextIntent action.'),
+                  content: Text('Invoked SelectAllTextIntent action.', style: TextStyle(fontSize: 32.0)),
                 ));
                 return;
               },
