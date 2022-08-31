@@ -41,6 +41,14 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Validation Sandbox',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textTheme: const TextTheme(
+          // Plain Text.
+          bodyMedium: TextStyle(fontSize: 24.0),
+          // Buttons.
+          labelLarge: TextStyle(fontSize: 32.0),
+          // ListTile text.
+          titleMedium: TextStyle(fontSize: 24.0),
+        ),
       ),
       initialRoute: '/',
       routes: <String, Widget Function(BuildContext)>{
