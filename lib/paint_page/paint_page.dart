@@ -74,13 +74,12 @@ class PaintPage extends ConsumerWidget {
           ),
           Container(
             color: kUglyGrey,
-            height: 160.0,
+            height: 120.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.start,
               children: const <Widget>[
                 Palette(),
-                Text('Text and stuff'),
               ],
             ),
           ),
