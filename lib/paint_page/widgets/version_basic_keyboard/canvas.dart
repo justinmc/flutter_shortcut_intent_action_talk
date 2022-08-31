@@ -106,7 +106,7 @@ class _CanvasState extends ConsumerState<Canvas> {
       case Tool.text:
         final Mark mark = Mark(
           color: selections.color,
-          rect: details.localPosition & const Size(200.0, 60.0),
+          rect: details.localPosition & const Size(280.0, 80.0),
           selected: true,
           type: MarkType.text,
         );
