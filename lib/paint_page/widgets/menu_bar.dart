@@ -50,6 +50,9 @@ class _MenuButton extends StatelessWidget {
     return TextButton(
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+        textStyle: MaterialStateProperty.all<TextStyle>(const TextStyle(
+          fontSize: 14.0,
+        )),
       ),
       onPressed: () {
         showDialog(
