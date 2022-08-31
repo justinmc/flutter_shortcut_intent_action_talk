@@ -72,6 +72,18 @@ flutter:
     - tool_rectangle.png
     - tool_selection.png
     - tool_text.png
+    - tool_line.png
+    - tool_paint.png
+    - tool_spray.png
+    - tool_can.png
+    - tool_picker.png
+    - tool_polygon_selection.png
+    - tool_polygon.png
+    - tool_eraser.png
+    - tool_line.png
+    - tool_magnifier.png
+    - tool_oval.png
+    - tool_squiggle.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

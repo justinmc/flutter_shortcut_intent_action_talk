@@ -8,6 +8,17 @@ enum Tool {
   pencil,
   rectangle,
   selection,
+  squiggle,
+  line,
+  oval,
+  spray,
+  magnifier,
+  can,
+  picker,
+  eraser,
+  paint,
+  polygon,
+  polygonSelection,
   text;
 
   static Set<Tool> get unimplemented => <Tool>{
