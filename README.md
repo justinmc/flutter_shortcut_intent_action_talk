@@ -4,11 +4,15 @@ A companion app for the Flutter Vikings 2022 talk - Custom User Interactions wit
 
 Run it live on the web at [justinmc.github.io/flutter_shortcut_intent_action_talk/](https://justinmc.github.io/flutter_shortcut_intent_action_talk/).  Most demos require a physical keyboard.
 
+<img src="https://raw.githubusercontent.com/justinmc/flutter_shortcut_intent_action_talk/main/assets/screenshot.png" height="300" />
+
 ## Main demo: [Flutter Paint](https://github.com/justinmc/flutter_shortcut_intent_action_talk/tree/main/lib/paint_page)
 
 A simplified drawing app.  Demonstrates [Actions](https://master-api.flutter.dev/flutter/widgets/Actions-class.html) and [Shortcuts](https://master-api.flutter.dev/flutter/widgets/Shortcuts-class.html) in a real app, as well as text editing shortcuts with [DefaultTextEditingShortcuts](https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/widgets/default_text_editing_shortcuts.dart).
 
 Use the dropdown in the AppBar to switch between code versions mentioned in the talk.
+
+<img src="https://raw.githubusercontent.com/justinmc/flutter_shortcut_intent_action_talk/main/assets/paint_screenshot.png" height="300" />
 
 ## Other demos
 
