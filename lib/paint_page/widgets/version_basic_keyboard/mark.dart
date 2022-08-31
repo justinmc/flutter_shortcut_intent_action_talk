@@ -50,12 +50,14 @@ class _MarkWidgetState extends State<MarkWidget> {
   };
 
   Map<SingleActivator, Intent> get _appleShortcuts => <SingleActivator, Intent>{
+    const SingleActivator(LogicalKeyboardKey.keyA, meta: true): const SelectAllMarksIntent(),
     const SingleActivator(LogicalKeyboardKey.keyC, meta: true): CopyMarkIntent(widget.mark),
     const SingleActivator(LogicalKeyboardKey.keyV, meta: true): const PasteMarkIntent(),
     const SingleActivator(LogicalKeyboardKey.keyX, meta: true): CutMarkIntent(widget.mark),
   };
 
   Map<SingleActivator, Intent> get _nonAppleShortcuts => <SingleActivator, Intent>{
+    const SingleActivator(LogicalKeyboardKey.keyA, control: true): const SelectAllMarksIntent(),
     const SingleActivator(LogicalKeyboardKey.keyC, control: true): CopyMarkIntent(widget.mark),
     const SingleActivator(LogicalKeyboardKey.keyV, control: true): const PasteMarkIntent(),
     const SingleActivator(LogicalKeyboardKey.keyX, control: true): CutMarkIntent(widget.mark),
