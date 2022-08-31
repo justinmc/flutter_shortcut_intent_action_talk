@@ -24,6 +24,12 @@ class DemoPage extends StatelessWidget {
         title: Text(title),
         actions: <Widget>[
           IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () async {
+              Navigator.pushNamedAndRemoveUntil(context, '/', (Route<dynamic> route) => false);
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.code),
             onPressed: () async {
               if (!await launchUrl(codeUri)) {

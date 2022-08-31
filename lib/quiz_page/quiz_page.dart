@@ -22,6 +22,14 @@ class QuizPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(title),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () async {
+              Navigator.pushNamedAndRemoveUntil(context, '/', (Route<dynamic> route) => false);
+            },
+          ),
+        ],
       ),
       body: ListView(
         children: const <Widget>[

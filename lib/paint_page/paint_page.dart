@@ -39,6 +39,12 @@ class PaintPage extends ConsumerWidget {
         title: const Text('Flutter Paint'),
         actions: <Widget>[
           IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () async {
+              Navigator.pushNamedAndRemoveUntil(context, '/', (Route<dynamic> route) => false);
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.more_vert),
             onPressed: () {
               showDialog(
