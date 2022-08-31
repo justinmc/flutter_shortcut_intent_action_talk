@@ -20,7 +20,7 @@ class ActionsPageThree extends StatelessWidget {
             _PushButtonIntent: CallbackAction<_PushButtonIntent>(
               onInvoke: (_PushButtonIntent intent) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Invoked _PushButtonIntent'),
+                  content: Text('Invoked _PushButtonIntent', style: TextStyle(fontSize: 32.0)),
                 ));
                 return;
               },

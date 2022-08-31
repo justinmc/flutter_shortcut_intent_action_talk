@@ -39,6 +39,12 @@ class PaintPage extends ConsumerWidget {
         title: const Text('Flutter Paint'),
         actions: <Widget>[
           IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () async {
+              Navigator.pushNamedAndRemoveUntil(context, '/', (Route<dynamic> route) => false);
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.more_vert),
             onPressed: () {
               showDialog(
@@ -68,13 +74,12 @@ class PaintPage extends ConsumerWidget {
           ),
           Container(
             color: kUglyGrey,
-            height: 160.0,
+            height: 120.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.start,
               children: const <Widget>[
                 Palette(),
-                Text('Text and stuff'),
               ],
             ),
           ),

@@ -25,7 +25,7 @@ class QuizShortcutsNestedPage extends StatelessWidget {
             MyBackspaceIntent: CallbackAction<MyBackspaceIntent>(
               onInvoke: (MyBackspaceIntent intent) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Invoked MyBackspaceIntent action.'),
+                  content: Text('Invoked MyBackspaceIntent action.', style: TextStyle(fontSize: 32.0)),
                 ));
                 return;
               },
@@ -39,10 +39,16 @@ class QuizShortcutsNestedPage extends StatelessWidget {
               shortcuts: const <ShortcutActivator, Intent>{
                 SingleActivator(LogicalKeyboardKey.backspace): DoNothingIntent(),
               },
-              child: TextButton(
-                focusNode: _focusNode,
-                onPressed: () => _focusNode.requestFocus(),
-                child: const Text('Tap me, then press backspace'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text('Will the Actions receive MyBackspaceIntent?'),
+                  TextButton(
+                    focusNode: _focusNode,
+                    onPressed: () => _focusNode.requestFocus(),
+                    child: const Text('Tap me, then press backspace'),
+                  ),
+                ],
               ),
             ),
           ),

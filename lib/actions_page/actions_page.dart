@@ -9,7 +9,7 @@ class ActionsPage extends StatelessWidget {
   });
 
   static const String route = 'actions';
-  static const String title = 'Flutter Actions Demo';
+  static const String title = 'Actions Demo';
   static const String subtitle = 'An example of just the Actions widget by itself.';
 
   @override

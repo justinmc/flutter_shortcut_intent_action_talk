@@ -9,7 +9,7 @@ class UnimplementedDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Oops'),
-      content: const Text('That is a decoy that\'s not implemented! It\'s a demo, take it easy on me.\n\n Instead, try creating some rectangles with the rectangle tool and using the keyboard to cut/copy/paste/delete.'),
+      content: const Text('That is a decoy that\'s not implemented! It\'s a demo, take it easy on me.\n\n Instead, try creating some rectangles with the rectangle tool and using the keyboard to cut/copy/paste/delete. Or use the pointer or text tools.'),
       actions: <Widget>[
         TextButton(
           style: TextButton.styleFrom(

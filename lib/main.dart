@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'actions_page/actions_page.dart';
 import 'actions_page/actions_page_2.dart';
@@ -9,6 +11,7 @@ import 'paint_page/paint_page.dart';
 import 'quiz_page/quiz_page.dart';
 import 'quiz_page/quiz_page_actions_nested.dart';
 import 'quiz_page/quiz_page_actions_nested_empty.dart';
+import 'quiz_page/quiz_page_actions_overridable.dart';
 import 'quiz_page/quiz_page_shortcuts_nested.dart';
 import 'quiz_page/quiz_page_shortcuts_sandwiched.dart';
 import 'quiz_page/quiz_page_text_field.dart';
@@ -38,6 +41,14 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Validation Sandbox',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textTheme: const TextTheme(
+          // Plain Text.
+          bodyMedium: TextStyle(fontSize: 24.0),
+          // Buttons.
+          labelLarge: TextStyle(fontSize: 32.0),
+          // ListTile text.
+          titleMedium: TextStyle(fontSize: 24.0),
+        ),
       ),
       initialRoute: '/',
       routes: <String, Widget Function(BuildContext)>{
@@ -51,7 +62,8 @@ class MyApp extends StatelessWidget {
         QuizActionsNestedEmptyPage.route: (BuildContext context) => const QuizActionsNestedEmptyPage(),
         QuizShortcutsNestedPage.route: (BuildContext context) => QuizShortcutsNestedPage(),
         QuizShortcutsSandwichedPage.route: (BuildContext context) => QuizShortcutsSandwichedPage(),
-        QuizTextFieldPage.route: (BuildContext context) => const QuizTextFieldPage(),
+        QuizTextFieldPage.route: (BuildContext context) => QuizTextFieldPage(),
+        QuizActionsOverridablePage.route: (BuildContext context) => const QuizActionsOverridablePage(),
         ShortcutsPage.route: (BuildContext context) => const ShortcutsPage(),
         ShortcutsPageTwo.route: (BuildContext context) => const ShortcutsPageTwo(),
         ShortcutsPageThree.route: (BuildContext context) => ShortcutsPageThree(),
@@ -70,6 +82,17 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Custom User Interactions Talk'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.code),
+            onPressed: () async {
+              final Uri uri = Uri.parse('https://github.com/justinmc/flutter_shortcut_intent_action_talk');
+              if (!await launchUrl(uri)) {
+                throw 'Could not launch $uri';
+              }
+            },
+          ),
+        ],
       ),
       body: ListView(
         children: const <Widget>[

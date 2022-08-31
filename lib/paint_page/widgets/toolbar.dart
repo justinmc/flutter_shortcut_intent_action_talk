@@ -38,46 +38,46 @@ class Toolbar extends StatelessWidget {
             tool: Tool.selection,
           ),
           _ToolButton(
-            tool: Tool.pencil,
+            tool: Tool.eraser,
+          ),
+          _ToolButton(
+            tool: Tool.can,
+          ),
+          _ToolButton(
+            tool: Tool.picker,
+          ),
+          _ToolButton(
+            tool: Tool.magnifier,
           ),
           _ToolButton(
             tool: Tool.pencil,
           ),
           _ToolButton(
-            tool: Tool.pencil,
+            tool: Tool.paint,
           ),
           _ToolButton(
-            tool: Tool.pencil,
-          ),
-          _ToolButton(
-            tool: Tool.pencil,
-          ),
-          _ToolButton(
-            tool: Tool.pencil,
+            tool: Tool.spray,
           ),
           _ToolButton(
             tool: Tool.text,
           ),
           _ToolButton(
-            tool: Tool.pencil,
+            tool: Tool.line,
           ),
           _ToolButton(
-            tool: Tool.pencil,
-          ),
-          _ToolButton(
-            tool: Tool.pencil,
+            tool: Tool.squiggle,
           ),
           _ToolButton(
             tool: Tool.rectangle,
           ),
           _ToolButton(
-            tool: Tool.pencil,
+            tool: Tool.polygon,
           ),
           _ToolButton(
             tool: Tool.circle,
           ),
           _ToolButton(
-            tool: Tool.pencil,
+            tool: Tool.oval,
           ),
         ],
       ),
@@ -102,6 +102,17 @@ class _ToolButton extends ConsumerWidget {
     Tool.rectangle: 'tool_rectangle.png',
     Tool.selection: 'tool_selection.png',
     Tool.text: 'tool_text.png',
+    Tool.spray: 'tool_spray.png',
+    Tool.picker: 'tool_picker.png',
+    Tool.can: 'tool_can.png',
+    Tool.paint: 'tool_paint.png',
+    Tool.polygonSelection: 'tool_polygon_selection.png',
+    Tool.polygon: 'tool_polygon.png',
+    Tool.eraser: 'tool_eraser.png',
+    Tool.line: 'tool_line.png',
+    Tool.magnifier: 'tool_magnifier.png',
+    Tool.oval: 'tool_oval.png',
+    Tool.squiggle: 'tool_squiggle.png',
   };
 
   @override

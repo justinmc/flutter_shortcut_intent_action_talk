@@ -25,7 +25,7 @@ class QuizShortcutsSandwichedPage extends StatelessWidget {
             MyBackspaceIntent: CallbackAction<MyBackspaceIntent>(
               onInvoke: (MyBackspaceIntent intent) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Invoked MyBackspaceIntent action in Actions higher in the tree.'),
+                  content: Text('Invoked MyBackspaceIntent action in Actions higher in the tree.', style: TextStyle(fontSize: 32.0)),
                 ));
                 return;
               },
@@ -40,16 +40,22 @@ class QuizShortcutsSandwichedPage extends StatelessWidget {
                 MyBackspaceIntent: CallbackAction<MyBackspaceIntent>(
                   onInvoke: (MyBackspaceIntent intent) {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text('Invoked MyBackspaceIntent in Actions lower in the tree.'),
+                      content: Text('Invoked MyBackspaceIntent in Actions lower in the tree.', style: TextStyle(fontSize: 32.0)),
                     ));
                     return;
                   },
                 ),
               },
-              child: TextButton(
-                focusNode: _focusNode,
-                onPressed: () => _focusNode.requestFocus(),
-                child: const Text('Tap me, then press backspace'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text('Will the higher or lower Actions receive MyBackspaceIntent?'),
+                  TextButton(
+                    focusNode: _focusNode,
+                    onPressed: () => _focusNode.requestFocus(),
+                    child: const Text('Tap me, then press backspace'),
+                  ),
+                ],
               ),
             ),
           ),

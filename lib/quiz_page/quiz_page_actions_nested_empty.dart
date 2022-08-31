@@ -21,7 +21,7 @@ class QuizActionsNestedEmptyPage extends StatelessWidget {
           actions: <Type, Action<Intent>>{
             MyIntent: CallbackAction<MyIntent>(onInvoke: (MyIntent intent) {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text('Invoked Actions higher in the tree.'),
+                content: Text('Invoked Actions higher in the tree.', style: TextStyle(fontSize: 32.0)),
               ));
               return;
             }),

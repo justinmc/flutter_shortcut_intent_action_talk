@@ -24,14 +24,13 @@ class ShortcutsPageTwo extends StatelessWidget {
             _BackspaceIntent: CallbackAction<_BackspaceIntent>(
               onInvoke: (_BackspaceIntent intent) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Invoked _BackspaceIntent'),
+                  content: Text('Invoked _BackspaceIntent', style: TextStyle(fontSize: 32.0)),
                 ));
                 return;
               },
             ),
           },
-          // NEW: An Shortcuts widget to receive keyboard shortcuts when the
-          // button below is focused.
+          // NEW: An Shortcuts widget to receive the backspace key.
           child: const Shortcuts(
             shortcuts: <ShortcutActivator, Intent>{
               SingleActivator(LogicalKeyboardKey.backspace): _BackspaceIntent(),

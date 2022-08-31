@@ -1,12 +1,18 @@
 # Custom User Interactions - Flutter Vikings 2022
 
-A live demo for the Flutter Vikings 2022 talk - Custom User Interactions with Shortcuts, Intents, and Actions ([slides](https://docs.google.com/presentation/d/1hUsKF8Vly72-Phcn7L9ikjJlFYFLUirNt1oGWu_BBSU/edit#slide=id.g147a725c12b_0_20)).
+A companion app for the Flutter Vikings 2022 talk - Custom User Interactions with Shortcuts, Intents, and Actions ([slides](https://docs.google.com/presentation/d/1hUsKF8Vly72-Phcn7L9ikjJlFYFLUirNt1oGWu_BBSU/edit#slide=id.g147a725c12b_0_20)). Contains live examples of all of the demos and quiz questions in the talk.
+
+Run it live on the web at [justinmc.github.io/flutter_shortcut_intent_action_talk/](https://justinmc.github.io/flutter_shortcut_intent_action_talk/).  Most demos require a physical keyboard.
+
+<img src="https://raw.githubusercontent.com/justinmc/flutter_shortcut_intent_action_talk/main/assets/screenshot.png" height="300" />
 
 ## Main demo: [Flutter Paint](https://github.com/justinmc/flutter_shortcut_intent_action_talk/tree/main/lib/paint_page)
 
 A simplified drawing app.  Demonstrates [Actions](https://master-api.flutter.dev/flutter/widgets/Actions-class.html) and [Shortcuts](https://master-api.flutter.dev/flutter/widgets/Shortcuts-class.html) in a real app, as well as text editing shortcuts with [DefaultTextEditingShortcuts](https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/widgets/default_text_editing_shortcuts.dart).
 
 Use the dropdown in the AppBar to switch between code versions mentioned in the talk.
+
+<img src="https://raw.githubusercontent.com/justinmc/flutter_shortcut_intent_action_talk/main/assets/paint_screenshot.png" height="300" />
 
 ## Other demos
 
@@ -22,7 +28,7 @@ Use the dropdown in the AppBar to switch between code versions mentioned in the 
   1. [Actions above and below Shortcuts](https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/quiz_page/quiz_page_shortcuts_sandwiched.dart)
   1. [TextField override](https://github.com/justinmc/flutter_shortcut_intent_action_talk/blob/main/lib/quiz_page/quiz_page_text_field.dart)
 
-### Repository maintenance
+## Repository maintenance
 To publish to GitHub Pages, do the following:
 
   1. `git checkout pages`
