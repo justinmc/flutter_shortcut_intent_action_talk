@@ -3,8 +3,8 @@ import 'toolbar.dart';
 
 import 'unimplemented_dialog.dart';
 
-class MenuBar extends StatelessWidget {
-  const MenuBar({
+class PaintMenuBar extends StatelessWidget {
+  const PaintMenuBar({
     super.key,
   });
 

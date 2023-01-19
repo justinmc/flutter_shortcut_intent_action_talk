@@ -62,28 +62,28 @@ flutter:
   uses-material-design: true
 
   assets:
-    - actions_screenshot.png
-    - paint_screenshot.png
-    - shortcuts_screenshot.png
-    - text_field_screenshot.png
-    - tool_pointer.png
-    - tool_circle.png
-    - tool_pencil.png
-    - tool_rectangle.png
-    - tool_selection.png
-    - tool_text.png
-    - tool_line.png
-    - tool_paint.png
-    - tool_spray.png
-    - tool_can.png
-    - tool_picker.png
-    - tool_polygon_selection.png
-    - tool_polygon.png
-    - tool_eraser.png
-    - tool_line.png
-    - tool_magnifier.png
-    - tool_oval.png
-    - tool_squiggle.png
+    - assets/actions_screenshot.png
+    - assets/paint_screenshot.png
+    - assets/shortcuts_screenshot.png
+    - assets/text_field_screenshot.png
+    - assets/tool_pointer.png
+    - assets/tool_circle.png
+    - assets/tool_pencil.png
+    - assets/tool_rectangle.png
+    - assets/tool_selection.png
+    - assets/tool_text.png
+    - assets/tool_line.png
+    - assets/tool_paint.png
+    - assets/tool_spray.png
+    - assets/tool_can.png
+    - assets/tool_picker.png
+    - assets/tool_polygon_selection.png
+    - assets/tool_polygon.png
+    - assets/tool_eraser.png
+    - assets/tool_line.png
+    - assets/tool_magnifier.png
+    - assets/tool_oval.png
+    - assets/tool_squiggle.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

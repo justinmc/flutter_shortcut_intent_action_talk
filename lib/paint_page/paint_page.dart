@@ -6,7 +6,7 @@ import 'data/version.dart';
 import 'widgets/canvas.dart';
 import 'widgets/version_no_keyboard/canvas.dart' as canvas_no_keyboard;
 import 'widgets/version_basic_keyboard/canvas.dart' as canvas_basic_keyboard;
-import 'widgets/menu_bar.dart';
+import 'widgets/paint_menu_bar.dart';
 import 'widgets/palette.dart';
 import 'widgets/toolbar.dart';
 
@@ -60,7 +60,7 @@ class PaintPage extends ConsumerWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          const MenuBar(),
+          const PaintMenuBar(),
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
